@@ -29,7 +29,6 @@ const APILIST = {
         contentWidget: quranView,
         commandBar: quranCommands,
         tabIcon: quranTabIcon,
-    
         placeholderText: 'وَقُل رَّبِّ زِدْنِي عِلْمًا'
     },
     'gemini': {
@@ -61,7 +60,13 @@ const APILIST = {
 let APIS = writable ([]);
 
 userOptions.subscribe ((n) => {
-    APIS.set(n.sidebar.pages.apis.order.map((apiName) => APILIST[apiName]))
+    const enabledApis = n.sidebar.pages.apis.order.filter(apiName => {
+        if (apiName === 'quran') {
+            return n.muslim?.enabled ?? false;
+        }
+        return true;
+    });
+    APIS.set(enabledApis.map((apiName) => APILIST[apiName]));
 });
 
 let currentApiId = 0;

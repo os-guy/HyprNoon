@@ -1,5 +1,3 @@
-const Pango = imports.gi.Pango;
-
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { Box, Button, Label, Revealer } = Widget;
@@ -16,7 +14,6 @@ const TodoListItem = (task, id, isDone, isEven = false) => {
         className: 'txt txt-small sidebar-todo-txt',
         label: task.content,
         selectable: true,
-        wrapMode: Pango.WrapMode.WORD_CHAR,
     });
     const actions = Box({
         hpack: 'end',
@@ -97,7 +94,8 @@ const todoItems = (isDone) => Widget.Scrollable({
         className: 'spacing-v-5',
         setup: (self) => self
             .hook(Todo, (self) => {
-                self.children = Todo.todo_json.map((task, i) => {
+                const todos = Array.isArray(Todo.todo_json) ? Todo.todo_json : [];
+                self.children = todos.map((task, i) => {
                     if (task.done != isDone) return null;
                     return TodoListItem(task, i, isDone);
                 })
@@ -111,7 +109,7 @@ const todoItems = (isDone) => Widget.Scrollable({
                             className: 'txt txt-subtext',
                             children: [
                                 MaterialIcon(`${isDone ? 'checklist' : 'check_circle'}`, 'gigantic'),
-                                Label({ label: `${isDone ? getString('Finished tasks will go here') : getString('Nothing here!')}`, wrapMode: Pango.WrapMode.WORD_CHAR, })
+                                Label({ label: `${isDone ? getString('Finished tasks will go here') : getString('Nothing here!')}` })
                             ]
                         })
                     ]
