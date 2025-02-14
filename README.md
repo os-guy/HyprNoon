@@ -1,24 +1,24 @@
 <div align="center">
-    <h1>【 Pharmaracism's HyprNoon 】</h1>
+    <h1>☀️ HyprNoon ☀️ by Pharmaracist</h1>
     <p align="center">
-      <img width="40%" src="https://user-images.githubusercontent.com/74038190/219923809-b86dc415-a0c2-4a38-bc88-ad6cf06395a8.gif">
+      <img width="40%" src="resources/logo.png">
     </p>
 </div>
 
 <div align="center"> 
 
-[![GitHub stars](https://img.shields.io/github/stars/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/dots-hyprland/stargazers)
-[![GitHub last commit](https://img.shields.io/github/last-commit/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB1C8&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/dots-hyprland/commits/main)
-[![Repo size](https://img.shields.io/github/repo-size/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=CAC992&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/dots-hyprland)
-[![License](https://img.shields.io/github/license/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=8CABD9&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/dots-hyprland/blob/main/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=F5A97F&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/dots-hyprland/issues)
+[![GitHub stars](https://img.shields.io/github/stars/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB1C8&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/commits/main)
+[![Repo size](https://img.shields.io/github/repo-size/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=CAC992&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon)
+[![License](https://img.shields.io/github/license/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=8CABD9&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=F5A97F&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/issues)
 [![Required Arch](https://img.shields.io/badge/Supports-Arch%20Linux-blue?style=for-the-badge&logo=arch-linux&logoColor=D9E0EE&labelColor=292324&color=7DC4E4)](https://archlinux.org/)
 [![Hyprland](https://img.shields.io/badge/Made%20for-Hyprland-pink?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=292324&color=C6A0F6)](https://hyprland.org/)
 
 </div>
 
 <div align="center">
-    <h2>🌟 My Personal Spaghetti Coded Dotfiles on Hyprland/AGS 🌟</h2>
+    <h2>My Personal Spaghetti Coded Dotfiles on Hyprland & AGS</h2>
 </div>
 
 <p align="center">
@@ -41,8 +41,8 @@
 - **Feature-Rich**: Packed with functionalities to enhance your desktop environment.
 - **Resource-Friendly**: Optimized to use minimal system resources while providing maximum performance.
 
-## 🚀 Installation
-### 💻 Manual Installation:
+## 🌟 Getting the Dots 🌟
+### 💻 Cloning This Repo:
 If you prefer to see what's being installed, you can manually clone and run the installation script:
 
 ```bash
@@ -56,11 +56,16 @@ cd dots-hyprland
 ./install.sh
 ```
 
-## 🖼️ Pics
+### 💻 Using Our Install Script (WIP):
+```bash
+WIP
+```
+
+## 🖼️ Showcase
 
 <div align="center">
   <details open>
-    <summary>📸 Screenshots</summary>
+    <summary>Desktop</summary>
     <br/>
     
   <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
@@ -79,14 +84,12 @@ cd dots-hyprland
 </div>
 
 ## 🙏 Credits
-- Special thanks to my girlfriend for the support!
-- Acknowledgements to End-4 for the original Hyprland rice.
-- Thanks to Sh1zicus for the help and the awesome kickstart.
+- My gf - She supported me a lot.
+- [end-4](https://github.com/end-4) - For the main dotfile of this beauiful creation.
+- [Sh1zicus](https://github.com/sh1zicus) - For the great kick-start of this dotfile.
 
 ## 🤝 Contributing
-We welcome contributions! Please feel free to submit a pull request or open an issue if you have suggestions or improvements.
+We welcome contributions! Please feel free to submit a pull request or open an issue if you have new ⭐ feature requests ⭐ or found some 🪲 bugs 🪲 !
 
 ## 📜 License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/pharmaracist/dots-hyprland/blob/main/LICENSE) file for details.
-
-*Note: This README was made by AI cuz im too lazy to write it myself! ..Pharmaracist*
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE) for more details.
