@@ -29,8 +29,8 @@
 
 ## 📚 Table of Contents
 - [Features](#-features)
-- [Installation](#-installation)
-- [Screenshots](#-screenshots)
+- [Getting The Dots](#-getting-the-dots-)
+- [Showcase](#%EF%B8%8F-showcase)
 - [Credits](#-credits)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -62,25 +62,16 @@ WIP
 ```
 
 ## 🖼️ Showcase
-
 <div align="center">
-  <details open>
-    <summary>Desktop</summary>
-    <br/>
-    
-  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-    <img src="pics/1.png" alt="Screenshot 1" style="width: 100%; border-radius: 10px;">
-    <img src="pics/2.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/3.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/4.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/5.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/6.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/7.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/8.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-    <img src="pics/9.png" alt="Screenshot 2" style="width: 100%; border-radius: 10px;">
-  </div>
 
-  </details>
+  | Titles | Screenshots                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tweaks     | <img src="resources/pics/1.png" width="200" /> <img src="resources/pics/3.png" width="200" />                                                                                                                                                                                                                                      |
+| App Themeing    | <img src="resources/pics/2.png" width="200" />                                                                                                                                                                                                                                                                                                                                                   |
+| Sidebars & Media Control  | <img src="resources/pics/5.png" width="200" />
+| Read Quaran     | <img src="resources/pics/6.png" width="200" />                                                                                            |
+| More From Desktop     | <img src="resources/pics/4.png" width="200" /> <img src="resources/pics/7.png" width="200" /> <img src="resources/pics/8.png" width="200" />     
+
 </div>
 
 ## 🙏 Credits
@@ -93,3 +84,7 @@ We welcome contributions! Please feel free to submit a pull request or open an i
 
 ## 📜 License
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE) for more details.
+
+## Join Us On Discord!
+You can join our community and help us GROW!
+[Invite Link](https://discord.gg/uJs5x6kKp7)
