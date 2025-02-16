@@ -1,7 +1,7 @@
 {
-    "name": "Pharmaracism Theme",
+    "name": "HyprNoon",
     "variables": {
-      "theme_fg_color": "{{colors.on_surface.default.hex}}",
+      "theme_fg_color": "{{colors.on_surface_variant.default.hex}}",
       "theme_text_color": "{{colors.on_surface.default.hex}}",
       "theme_bg_color": "{{colors.surface.default.hex}}",
       "theme_base_color": "{{colors.surface.default.hex}}",
@@ -69,8 +69,8 @@
       "thumbnail_fg_color": "{{colors.on_surface.default.hex}}",
       "shade_color": "rgba(0, 0, 0, 1)",
       "scrollbar_outline_color": "rgba(0, 0, 0, 1)",
-      "sidebar_bg_color": "{{colors.secondary.default.hex}}",
-      "sidebar_fg_color": "{{colors.surface_variant.default.hex}}",
+      "sidebar_bg_color": "{{colors.secondary_container.default.hex}}",
+      "sidebar_fg_color": "{{colors.on_secondary_container.default.hex}}",
       "sidebar_border_color": "{{colors.background.default.hex}}",
       "sidebar_backdrop_color": "{{colors.background.default.hex}}"
     },

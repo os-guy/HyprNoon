@@ -26,3 +26,4 @@ alias default="micro ~/.config/ags/modules/.configuration/user_options.default.j
 #   set_color cyan; echo (pwd)
 #   set_color green; echo '> '
 # end
+alias cat=bat

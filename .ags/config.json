@@ -14,17 +14,8 @@
   "session": {
     "enabled": true
   },
-  "cheatshhet": {
-    "enabled": true,
-    "modules": {
-      "periodicTable": "true",
-      "cheats": "true"
-    },
-    "note": "todo Cheatsheet"
-  },
   "desktopBackground": {
-    "enabled": true,
-    "visible": false
+    "enabled": true
   },
   "ai": {
     "defaultGPTProvider": "microsoft-phi-4",
@@ -170,7 +161,7 @@
       "__custom": [
         "extraGptModels"
       ],
-    "extraGptModels": {
+      "extraGptModels": {
         "deepseek": {
           "name": "deepseek API",
           "logo_name": "deepseek-symbolic",
@@ -321,7 +312,7 @@
   },
   "workspaces": {
     "shown": 9,
-    "style": "normal"
+    "style": "japanese"
   },
   "dock": {
     "enabled": true,
@@ -450,4 +441,4 @@
       "showAvatar": true
     }
   }
-}
+ }
