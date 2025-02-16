@@ -9,6 +9,7 @@ import {
     ModuleIdleInhibitor,
     HyprToggleIcon,
     ModuleReloadIcon,
+    ToggleIconCalendar,
     ModuleSettingsIcon,
     ModulePowerIcon,
     ModuleRawInput,
@@ -33,6 +34,11 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js'; 
 import taskmanager from './centermodules/taskmanager.js';
 
+export const calendarRevealer = Widget.Revealer({
+    revealChild: false,
+    child: ModuleCalendar(),
+    transition: 'slide_up',
+});
 const modulesList = {
     vpnGate: {
         name: 'VPN Gate',
@@ -160,10 +166,7 @@ const timeRow = Box({
             ]
         }),
         Widget.Box({ hexpand: true }),
-        // ModuleReloadIcon({ hpack: 'end' }),
-        // ModuleSettingsIcon({ hpack: 'end' }),
-        // ModulePowerIcon({ hpack: 'end' }),
-    ]
+        ]
 });
 
 const togglesBox = Widget.Box({
@@ -176,6 +179,7 @@ const togglesBox = Widget.Box({
         await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         await ModuleNightLight(),
         await ModuleGameMode(),
+        ToggleIconCalendar(), // Add the calendar toggle here
         ModuleIdleInhibitor(),
         ModuleSettingsIcon(),
         await ModuleCloudflareWarp(),
@@ -258,7 +262,7 @@ export default () => Box({
                         sidebarOptionsStack,
                     ],
                 }),
-                Box({child:ModuleCalendar()})
+                calendarRevealer
             ]
         }),
     ],

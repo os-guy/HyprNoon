@@ -47,7 +47,7 @@ const AppButton = ({ client }) => {
             }),
           ],
         }),
-        Box({vpack:"end",hexpand:true,className:"active-window-tb"})
+        Box({vpack:"end",css:`min-width:10rem`,className:"active-window-tb"})
       ]
     })
   });

@@ -24,6 +24,7 @@ export const WindowsTaskbar = Widget.CenterBox({
         onClicked: () => App.toggleWindow("overview"),
       }),
       ActiveApps(),
+      Widget.Box({hexpand:true})
     ],
   }),
   endWidget: Widget.Box({

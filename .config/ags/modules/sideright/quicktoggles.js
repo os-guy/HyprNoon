@@ -10,7 +10,7 @@ import { BluetoothIndicator, NetworkIndicator } from '../.commonwidgets/statusic
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { sidebarOptionsStack } from './sideright.js';
-
+import { calendarRevealer } from './sideright.js';
 // Кэшируем часто используемые значения
 const userOpts = userOptions.asyncGet();
 const configDir = App.configDir;
@@ -174,6 +174,31 @@ export const ModuleRawInput = async (props = {}) => {
     }
 }
 
+export const ToggleIconCalendar = (props = {}) => Widget.Button({
+    className: 'txt-small sidebar-iconbutton',
+    onClicked: (self) => {
+        calendarRevealer.revealChild = !calendarRevealer.revealChild;
+        self.toggleClassName('sidebar-button-active', calendarRevealer.revealChild);
+    },
+    child: MaterialIcon('calendar_month', 'norm'),
+    setup: (self) => {
+        setupCursorHover(self);
+        
+        // Set initial state from revealer's current status
+        self.toggleClassName(
+            'sidebar-button-active', 
+            calendarRevealer.revealChild
+        );
+
+        // Update button state when revealer changes
+        self.hook(calendarRevealer, () => {
+            self.toggleClassName(
+                'sidebar-button-active',
+                calendarRevealer.revealChild
+            );
+        }, 'notify::reveal-child');
+    },
+});
 export const ModuleIdleInhibitor = (props = {}) => {
     const scriptPath = `${configDir}/scripts/wayland-idle-inhibitor.py`;
     
