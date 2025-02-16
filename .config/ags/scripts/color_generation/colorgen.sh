@@ -49,10 +49,6 @@ if [[ ! "$1" = "#"* ]]; then # this is an image
     # Store the image path
     echo "$1" > "$STATE_DIR/user/current_wallpaper.txt"
 fi
-matugen image "$1" -m "$lightdark" -t "scheme-$materialscheme" &&
-agsv1 run-js "handleStyles(false);"
+    matugen image "$1" -m "$lightdark" -t "scheme-$materialscheme" &&
+    agsv1 run-js "handleStyles(false);"
 
-# Apply the generated colors if --apply flag is set
-if [ "$2" = "" ]; then
-    exit
-fi

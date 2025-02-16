@@ -39,7 +39,7 @@ post_hook = 'hyprctl reload'
 
 [templates.hyprland]
 input_path = '~/.config/matugen/templates/hyprland-colors.conf'
-output_path = '~/.config/hypr/colors.conf'
+output_path = '~/.cache/ags/user/generated/colors.conf'
 
 # QT 
 
@@ -89,3 +89,7 @@ output_path = '~/.config/vesktop/themes/material-you.css'
 [templates.telegram]
 input_path = '~/.config/matugen/templates/telegram-colors.tdesktop-theme'
 output_path = '~/.config/telegram-desktop/themes/material-you.tdesktop-theme'
+
+[templates.heroic]
+input_path = '~/.config/matugen/templates/heroic-theme.css'
+output_path = '~/.local/state/ags/user/generated/heroic.css'
