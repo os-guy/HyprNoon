@@ -34,7 +34,7 @@ const macBar = async () => {
            BarBattery()
           ],
         }),
-        NormalOptionalWorkspaces()
+        NormalOptionalWorkspaces
       ],
     }),
     centerWidget: Widget.Box(),

@@ -23,12 +23,14 @@ $bar_ws_width_focus_active: 6.045rem;
     @include element-decel;
     background-color: $layer0;
     min-width: 1rem;
-    @include full-rounding
+    @include full-rounding;
+    border: 0.6px solid $secondaryContainer
 }
 .bar-notch {
     background-color: $layer0;
     min-width:18rem;
     border-radius: 0 0 $rounding_mediumlarge $rounding_mediumlarge;
+    border-bottom: 0.6px solid $secondaryContainer
 }
 .bar-resources {
     progressbar {
@@ -39,24 +41,24 @@ $bar_ws_width_focus_active: 6.045rem;
             // min-height: 0.2rem;
             min-width: 6rem;
             background-color: $surfaceVariant;
-            
+
         }
-        
+
         progress {
             // min-height: 0.2rem;
             background-color: $primary;
             @include full-rounding;
         }
     }
-    
+
     &:first-child progressbar {
         progress { background-color: $primary; }
     }
-    
+
     &:nth-child(2) progressbar {
         progress { background-color: mix($primary, $onSurface, 80%); }
     }
-    
+
     &:last-child progressbar {
         progress { background-color: mix($primary, $onSurface, 60%); }
     }
@@ -107,11 +109,6 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-bg-focus {
     background-color: $layer0;
     min-height: 1.364rem;
-}
-.bar-notch {
-    background-color: $layer0;
-    padding: 0rem 0.681rem;
-    border-radius: 0 0 $rounding_medium $rounding_medium;
 }
 .bar-bg-nothing {
     background-color: $layer0;
@@ -273,7 +270,7 @@ $bar_ws_width_focus_active: 6.045rem;
     color: $battOnLayer2;
 }
 
- 
+
 .bar-music-art {
     margin: 4px;
     border: 1px solid $surfaceContainerHighest;
@@ -609,12 +606,12 @@ $bar_ws_width_focus_active: 6.045rem;
         min-height: 25px;
         animation: chargeAnimation 2s linear infinite;
     }
-    
+
     &.bar-batt-low trough progress {
         background-color: $error;
         border-radius: 2px;
     }
-    
+
 }
 
 @keyframes chargeAnimation {

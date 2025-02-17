@@ -22,22 +22,16 @@ const PowerBtn = () => Widget.Button({
 const ChatGPT = () => Widget.Button({
   vpack:'center',
   hpack:'center',
-  css:`padding:3px ;margin: 5px;`,
+  css:`padding:7px ;margin: 5px;`,
   className: "txt-large bar-util-btn2 icon-material onSurfaceVariant",
-  child: Widget.Icon({
-    icon: "deepseek-symbolic",
-    size: 18,
-  }),
-  onClicked: () => {
-    Utils.execAsync([`xdg-open`,`https://chat.deepseek.com/`]).catch(print);  
-  },
+  child: Widget.Icon({icon: "deepseek-symbolic",size: 22}),
+  onClicked: () => {Utils.execAsync([`xdg-open`,`https://chat.deepseek.com/`]).catch(print)},
   setup:setupCursorHover
 });
 
 const Wallhaven = () => Widget.Button({
   vpack:'center',
   hpack:'center',
-  // css:`padding:3px ;margin: 5px;`,
   className: "txt-large bar-util-btn2 icon-material onSurfaceVariant",
   child: Widget.Label({
     label: "wallpaper",
@@ -50,11 +44,11 @@ const Wallhaven = () => Widget.Button({
 const GH = () => Widget.Button({
   vpack:'center',
   hpack:'center',
-  css:`padding:3px ;margin: 5px;`,
+  css:`padding:6px ;margin: 5px;`,
   className: "txt-large bar-util-btn2 icon-material onSurfaceVariant",
   child: Widget.Icon({
     icon: "github-symbolic",
-    size: 18,
+    size: 26,
   }),
   onClicked: () => {
     Utils.execAsync([`xdg-open`,`https://www.github.com/`]).catch(print);  
@@ -77,8 +71,8 @@ export const NotchBar = Widget.CenterBox({
   Widget.Box({
     children: [
       scrolledmodule({children:[
-        Widget.Box({child:ChatGPT(),hpack:'center',vpack:'center',className: "bar-util-btn2 ",}),
-        Widget.Box({child:GH(),hpack:'center',vpack:'center',className: "bar-util-btn2 ",}),
+        ChatGPT(),
+        GH(),
       ]}),
       Widget.Box({
         children:[

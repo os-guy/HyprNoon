@@ -16,7 +16,7 @@ output_path = '~/.config/rofi/colors.rasi'
 [templates.gradience]
 input_path = '~/.config/matugen/templates/gradience.json'
 output_path = '~/.cache/ags/user/generated/gradience/gradience.json'
-post_hook='mkdir -p ~/.config/presets && rm -rf ~/.config/gtk-4.0 ~/.config/gtk-3.0 && gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both'
+post_hook='mkdir -p ~/.config/presets & gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both'
 
 # Regular GTK Theming Stuff #! Fallback
 
@@ -55,18 +55,18 @@ output_path = '~/.config/qt6ct/colors/matugen.conf'
 
 [templates.kitty]
 input_path = '~/.config/matugen/templates/kitty-colors.conf'
-output_path = '~/.config/kitty/colors.conf'
+output_path = '~/.cache/ags/user/generated/kitty-colors.conf'
 
 [templates.starship]
 input_path = '~/.config/matugen/templates/starship-colors.toml'
 output_path = '~/.config/starship.toml'
 post_hook = 'starship init zsh > ~/.zshrc'
 
-# Custom Apps 
+# Standard Apps ( Uses The Custom Dir )
 
-[templates.spicetify]
-input_path = '~/.config/matugen/templates/colors.ini'
-output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
+[templates.heroic]
+input_path = '~/.config/matugen/templates/heroic-theme.css'
+output_path = '~/.cache/ags/user/generated/heroic-colors.css'
 
 [templates.obsidian]
 input_path = '~/.config/matugen/templates/obsidian.css'
@@ -76,6 +76,12 @@ output_path = '/mnt/Data/General-Archive/obsidian/.obsidian/snippets/material-yo
 input_path = '~/.config/matugen/templates/vscode-color-theme.json'
 output_path = '~/.windsurf/extensions/theme-material-you/themes/vscode.json'
 post_hook = 'cp ~/.config/matugen/other/vscode-package.json ~/.windsurf/extensions/theme-material-you/package.json'
+
+# Custom Apps ( Uses The .config by default)
+
+[templates.spicetify]
+input_path = '~/.config/matugen/templates/colors.ini'
+output_path = '~/.config/spicetify/Themes/Comfy/color.ini'
 
 [templates.pywalfox]
 input_path = '~/.config/matugen/templates/pywalfox-colors.json'
@@ -89,7 +95,3 @@ output_path = '~/.config/vesktop/themes/material-you.css'
 [templates.telegram]
 input_path = '~/.config/matugen/templates/telegram-colors.tdesktop-theme'
 output_path = '~/.config/telegram-desktop/themes/material-you.tdesktop-theme'
-
-[templates.heroic]
-input_path = '~/.config/matugen/templates/heroic-theme.css'
-output_path = '~/.local/state/ags/user/generated/heroic.css'

@@ -3,7 +3,6 @@ const { Gtk } = imports.gi;
 
 export const RoundedCorner = (place, props) => Widget.DrawingArea({
     ...props,
-    css: 'min-width: 16px; min-height: 16px;',
     setup: widget => {
         widget.set_size_request(16, 16);
         widget.connect('draw', (widget, cr) => {
