@@ -56,7 +56,7 @@ const WeatherWidget = () => {
       const encodedCity = encodeURIComponent(city.trim());
       const cmd = ['curl', '-s', '-k', '--connect-timeout', '5', `https://wttr.in/${encodedCity}?format=j1`];
       const response = await execAsync(cmd);
-      
+
       if (!response) {
         throw new Error('Empty response from weather API');
       }
@@ -285,7 +285,7 @@ const WeatherWidget = () => {
   });
 
   const weatherBox = Box({
-    css: `padding:4.55px 45px`,
+    //css: `padding:0px 20px`,
     // className: "txt-onSurfaceVariant bar-group-margin bar-group bar-group-standalone bar-group-pad",
     children: [contentStack],
   });
@@ -339,7 +339,7 @@ const WeatherWidget = () => {
   const updateMediaInfo = () => {
     const title = Media.title;
     const newTitle = title ? truncateText(title) : 'Scilent Mode';
-    
+
     // If title changed and it's not empty, show it briefly
     if (newTitle !== lastTitle && title) {
       mediaTitleLabel.label = newTitle;
@@ -347,7 +347,7 @@ const WeatherWidget = () => {
     } else {
       mediaTitleLabel.label = newTitle;
     }
-    
+
     lastTitle = newTitle;
   };
   const showNotification = (Notification) => {
@@ -380,9 +380,9 @@ const WeatherWidget = () => {
       default:
         displayMode = 'weather';
     }
-    
+
     contentStack.shown = displayMode;
-    
+
     if (displayMode === 'prayer') {
       const nextPrayer = PrayerTimesService.nextPrayerName;
       const nextTime = PrayerTimesService.nextPrayerTime?.trim();
@@ -400,10 +400,10 @@ const WeatherWidget = () => {
       GLib.source_remove(cycleTimeout);
       cycleTimeout = null;
     }
-    
+
     // Manual cycle
     cycleModes();
-    
+
     // Restart auto-cycle after 3 seconds
     cycleTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, CYCLE_INTERVAL, () => {
       cycleModes();

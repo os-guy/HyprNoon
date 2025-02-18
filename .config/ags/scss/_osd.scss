@@ -80,10 +80,9 @@
 }
 
 .osd-colorscheme {
-    border-radius: 0 0 1.023rem 1.023rem;
+    border-radius: 0 0 $rounding_large $rounding_large;
     background-color: $layer0;
     padding: 0.313rem 0.626rem;
-    // @include elevation2;
 }
 
 .osd-colorscheme-settings {

@@ -65,6 +65,7 @@ export default () => Box({
     hpack: 'start',
     vpack: 'end',
     vertical: true,
+    css:`margin:0 4rem 2rem`,
     className: 'bg-time-box spacing-h--10',
     children: [
         TimeAndDate(),

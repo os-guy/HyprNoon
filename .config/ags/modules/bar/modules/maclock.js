@@ -5,7 +5,7 @@ const { Box, Label, EventBox } = Widget;
 const { GLib } = imports.gi;
 import fetcher from "./fetcher.js";
 const options = userOptions.asyncGet();
-const timeFormat = "%a %b %d    %I:%M";
+const timeFormat = "%a %b %d %I:%M %P";
 
 const time = Variable("", {
   poll: [

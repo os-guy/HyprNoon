@@ -121,7 +121,7 @@ const TrackArtists = ({ player, ...rest }) => Label({
 const CoverArt = ({ player, ...rest }) => {
     const coverArtDrawingArea = Widget.DrawingArea({ className: 'osd-music-cover-art' });
     const coverArtDrawingAreaStyleContext = coverArtDrawingArea.get_style_context();
-    
+
     const fallbackCoverArt = Box({ // Fallback display when no cover art is available.
         className: 'osd-music-cover-fallback',
         homogeneous: true,
@@ -143,7 +143,7 @@ const CoverArt = ({ player, ...rest }) => {
                 const frameWidth = coverArtDrawingAreaStyleContext.get_property('min-width', Gtk.StateFlags.NORMAL);
                 let imageHeight = frameHeight;
                 let imageWidth = frameWidth;
-                
+
                 execAsync(['identify', '-format', '{"w":%w,"h":%h}', imagePath])
                     .then((output) => {
                         const imageDimensions = JSON.parse(output);
@@ -154,7 +154,7 @@ const CoverArt = ({ player, ...rest }) => {
                         } else {
                             imageHeight = imageWidth / imageAspectRatio;
                         }
-                        
+
                         self.attribute.pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, imageWidth, imageHeight);
 
                         coverArtDrawingArea.set_size_request(frameWidth, frameHeight);
@@ -165,7 +165,7 @@ const CoverArt = ({ player, ...rest }) => {
                             cr.arc(borderRadius, frameHeight - borderRadius, borderRadius, 0.5 * Math.PI, Math.PI);
                             cr.closePath();
                             cr.clip();
-                            
+
                             Gdk.cairo_set_source_pixbuf(cr, self.attribute.pixbuf,
                                 frameWidth / 2 - imageWidth / 2,
                                 frameHeight / 2 - imageHeight / 2
@@ -351,7 +351,7 @@ const PlayState = ({ player }) => {
 }
 
 const CavaVisualizer = () => {
-    const bars = Array(20).fill(0).map(() => Widget.Box({
+    const bars = Array(30).fill(0).map(() => Widget.Box({
         className: 'cava-bar cava-bar-low',
         hpack: 'center',
         vpack: 'end',
@@ -364,18 +364,18 @@ const CavaVisualizer = () => {
     const startCava = () => {
         if (cavaHook || !visualizer) return;
         CavaService.start();
-        
+
         const updateBars = () => {
             const output = CavaService.output;
             if (!output || typeof output !== 'string') return;
-            
+
             const values = output.split('');
             const step = Math.floor(values.length / bars.length);
-            
+
             bars.forEach((bar, i) => {
                 const value = values[i * step]?.charCodeAt(0) - 9601 || 0;
                 const height = Math.max(1, value * 10);
-                
+
                 const intensity = value > 2 ? 'high' : value > 0.5 ? 'med' : 'low';
                 bar.className = `cava-bar cava-bar-${intensity}`;
                 bar.css = `
@@ -385,26 +385,26 @@ const CavaVisualizer = () => {
                 `;
             });
         };
-        
+
         cavaHook = CavaService.connect('output-changed', updateBars);
     };
 
     const stopCava = () => {
         if (!cavaHook) return;
-        
+
         try {
             CavaService.stop();
             if (cavaHook > 0) {
                 CavaService.disconnect(cavaHook);
             }
         } catch (e) {}
-        
+
         cavaHook = null;
-        
+
         bars.forEach(bar => {
             bar.className = 'cava-bar cava-bar-low';
             bar.css = `
-                min-height: 1px;
+                min-height: 0px;
                 min-width: 8px;
                 border-radius: 4px;
             `;
@@ -415,7 +415,7 @@ const CavaVisualizer = () => {
         const player = Mpris.getPlayer();
         // Run the visualizer only when music controls are visible and playback is active.
         const shouldRun = showMusicControls.value && player?.playBackStatus === 'Playing';
-        
+
         if (shouldRun) {
             startCava();
         } else {
@@ -429,17 +429,17 @@ const CavaVisualizer = () => {
         children: bars,
         setup: (self) => {
             visualizer = self;
-            
+
             self.hook(showMusicControls, checkAndUpdateCava);
             self.hook(Mpris, checkAndUpdateCava);
-            
+
             Utils.timeout(1000, checkAndUpdateCava);
-            
+
             self.connect('destroy', () => {
                 stopCava();
                 visualizer = null;
             });
-            
+
             self.connect('unrealize', () => {
                 stopCava();
                 visualizer = null;
@@ -485,7 +485,7 @@ const MusicControlsWidget = (player) => Box({
                                         box.pack_start(TrackControls({ player: player }), false, false, 0);
                                         box.pack_end(PlayState({ player: player }), false, false, 0);
                                         // Only show TrackTime if there is plasma integration or if the player is Chromium.
-                                        if (hasPlasmaIntegration || player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) 
+                                        if (hasPlasmaIntegration || player.busName.startsWith('org.mpris.MediaPlayer2.chromium'))
                                             box.pack_end(TrackTime({ player: player }), false, false, 0)
                                     }
                                 })
@@ -510,9 +510,10 @@ export default () => Revealer({
     }),
     child: Box({
         vexpand:true,
-        css:`min-height:10rem`,
+        hexpand:true,
+        css:`min-height:10rem;min-width:50rem`,
         children: Mpris.bind("players")
-            .as(players => 
+            .as(players =>
                 // Only valid players (as determined by isRealPlayer) get their own MusicControlsWidget.
                 players.map((player) => (isRealPlayer(player) ? MusicControlsWidget(player) : null))
             )

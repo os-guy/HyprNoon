@@ -8,7 +8,7 @@ import { currentShellMode } from "../../variables.js";
 const wiseCat = Widget.Box({
   vpack:"start",
   children: [
-    Widget.Box({child:QuoteWidget(),vpack:"center"}),  
+    Widget.Box({child:QuoteWidget(),vpack:"center"}),
     Widget.Button({
       vpack:"center",
       child:Widget.Icon({icon:'9',size: 120,}),
@@ -20,7 +20,7 @@ export default (monitor) =>
   Widget.Window({
     name: `desktopbackground${monitor}`,
     layer: "background",
-    //exclusivity: 'ignore',
+    exclusivity: 'ignore',
     visible: true,
     keymode: "on-demand",
     child: Widget.Overlay({

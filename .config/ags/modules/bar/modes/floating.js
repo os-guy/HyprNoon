@@ -12,7 +12,7 @@ const expand = () => Widget.Box({ hexpand: true, css: "min-height:0.5rem" });
 
 export const FloatingBar = Widget.CenterBox({
   className: "bar-floating",
-  css: `margin: ${userOptions.asyncGet().bar.floatingElevation}rem ${userOptions.asyncGet().bar.floatingWidth}rem;min-height:2.5rem;padding:0.3rem 0`,
+  css: `margin: ${userOptions.asyncGet().bar.floatingElevation}rem ${userOptions.asyncGet().bar.floatingWidth}rem;min-height:2rem;padding:0.2rem 0`,
   startWidget: Widget.Box({
     css: "margin-left:1.8rem;",
     children: [

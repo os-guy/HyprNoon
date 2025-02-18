@@ -13,10 +13,10 @@ const createClassWindow = async () => {
       await import("resource:///com/github/Aylur/ags/service/hyprland.js")
     ).default;
 
-    const baseCSS = 'font-size:15px; transition: opacity 0.1s ease-in-out;';
+    const baseCSS = 'transition: opacity 0.1s ease-in-out;';
 
     return Widget.Label({
-      className: "txt-monospace txt-semibold onSurfaceVariant",
+      className: " txt-norm onSurfaceVariant",
       css: baseCSS + 'opacity: 1;',
       setup: (self) => {
         let timeoutId = 0;

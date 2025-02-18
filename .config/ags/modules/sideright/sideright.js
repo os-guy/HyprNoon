@@ -7,7 +7,7 @@ import {
     ToggleIconWifi,
     ModuleNightLight,
     ModuleIdleInhibitor,
-    HyprToggleIcon,
+    //HyprToggleIcon,
     ModuleReloadIcon,
     ToggleIconCalendar,
     ModuleSettingsIcon,
@@ -31,7 +31,7 @@ import { checkKeybind } from '../.widgetutils/keybind.js';
 // import { WWO_CODE, WEATHER_SYMBOL, NIGHT_WEATHER_SYMBOL } from '../.commondata/weather.js';
 import GLib from 'gi://GLib';
 // import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
-import VPN from './centermodules/vpn.js'; 
+import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 
 export const calendarRevealer = Widget.Revealer({
@@ -129,14 +129,14 @@ const timeRow = Box({
                                 return execAsync(['bash', '-c', 'uptime']).then(output => {
                                     const uptimeRegex = /up\s+((\d+)\s+days?,\s+)?((\d+):(\d+)),/;
                                     const matches = uptimeRegex.exec(output);
-        
+
                                     if (matches) {
                                         const days = matches[2] ? parseInt(matches[2]) : 0;
                                         const hours = matches[4] ? parseInt(matches[4]) : 0;
                                         const minutes = matches[5] ? parseInt(matches[5]) : 0;
-        
+
                                         let formattedUptime = '';
-        
+
                                         if (days > 0) {
                                             formattedUptime += `${days} d `;
                                         }
@@ -144,7 +144,7 @@ const timeRow = Box({
                                             formattedUptime += `${hours} h `;
                                         }
                                         formattedUptime += `${minutes} m`;
-        
+
                                         return formattedUptime;
                                     } else {
                                         throw new Error('Failed to parse uptime output');
@@ -152,7 +152,7 @@ const timeRow = Box({
                                 });
                             }
                         };
-        
+
                         self.poll(5000, label => {
                             getUptime().then(upTimeString => {
                                 label.label = `${getString("Uptime:"
@@ -176,7 +176,7 @@ const togglesBox = Widget.Box({
     children: [
         ToggleIconWifi(),
         ToggleIconBluetooth(),
-        await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
+        //await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         await ModuleNightLight(),
         await ModuleGameMode(),
         ToggleIconCalendar(), // Add the calendar toggle here
@@ -252,8 +252,8 @@ export default () => Box({
                             togglesBox,
                         ]
                     }),
-                       
-                    ]     
+
+                    ]
                 }),
                 Box({
                     className: 'sidebar-group',

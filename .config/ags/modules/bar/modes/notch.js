@@ -1,6 +1,6 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { StatusIcons } from "./../../.commonwidgets/statusicons.js";
-import Clock from "../modules/inline_clock.js";
+import Clock from "../modules/maclock.js";
 import Complex from "../modules/weather.js";
 import Battery from "../modules/battery.js";
 import WindowTitle from "../modules/window_title.js";
@@ -8,6 +8,7 @@ import { RoundedCorner} from '../../.commonwidgets/cairo_roundedcorner.js';
 import { changeWallpaperButton } from "../modules/utils.js";
 import { setupCursorHover } from "../../.widgetutils/cursorhover.js";
 import scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
+
 const PowerBtn = () => Widget.Button({
   vpack:'center',
   child: Widget.Label({
@@ -29,15 +30,15 @@ const ChatGPT = () => Widget.Button({
   setup:setupCursorHover
 });
 
-const Wallhaven = () => Widget.Button({
+const Edit = () => Widget.Button({
   vpack:'center',
   hpack:'center',
   className: "txt-large bar-util-btn2 icon-material onSurfaceVariant",
   child: Widget.Label({
-    label: "wallpaper",
+    label: "edit",
   }),
   onClicked: () => {
-    Utils.execAsync([`xdg-open`,`https://wallhaven.cc/random?seed=78b7vn&page=2`]).catch(print);  
+    Utils.execAsync([`kitty`,`nvim`]).catch(print);
   },
   setup:setupCursorHover
 });
@@ -51,13 +52,13 @@ const GH = () => Widget.Button({
     size: 26,
   }),
   onClicked: () => {
-    Utils.execAsync([`xdg-open`,`https://www.github.com/`]).catch(print);  
+    Utils.execAsync([`xdg-open`,`https://www.github.com/`]).catch(print);
   },
   setup:setupCursorHover
 });
 
 export const NotchBar = Widget.CenterBox({
-  startWidget: 
+  startWidget:
   Widget.Box({
     vpack:'center',
     css: "margin-left:2rem;",
@@ -67,7 +68,7 @@ export const NotchBar = Widget.CenterBox({
       Widget.Box({child:await WindowTitle(),css:`padding:6px 20px;`,hpack:"center",className: "bar-util-btn2 ",vpack:'center',}),
     ],
   }),
-  centerWidget: 
+  centerWidget:
   Widget.Box({
     children: [
       scrolledmodule({children:[
@@ -90,8 +91,8 @@ export const NotchBar = Widget.CenterBox({
       }),
       scrolledmodule({children:[
         Widget.Box({child:changeWallpaperButton(),css:`padding:6px 8px`,className: "bar-util-btn2 ",hpack:'center',vpack:'center',}),
-        Widget.Box({child:Wallhaven(),css:`padding:6px 8px`,className: "bar-util-btn2 ",hpack:'center',vpack:'center',}),
-        
+        Widget.Box({child:Edit(),css:`padding:6px 8px`,className: "bar-util-btn2 ",hpack:'center',vpack:'center',}),
+
       ]}),
     ]
   }),

@@ -1,3 +1,5 @@
+
+
 const { Gio, GLib } = imports.gi;
 import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
@@ -34,7 +36,7 @@ const ColorSchemeSettingsRevealer = () => {
         hpack: 'end',
         child: headerButtonIcon,
     });
-    
+
     const content = Widget.Revealer({
         revealChild: false,
         transition: 'slide_down',
@@ -126,7 +128,7 @@ const schemeOptionsArr = [
         { name: getString('Expressive'), value: 'expressive' },
         { name: getString('Content'), value: 'content' },
     ]
-   
+
 ];
 
 const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
@@ -240,13 +242,17 @@ const topLeftCorner = RoundedCorner('topleft', {
 const topRightCorner = RoundedCorner('topright', {
     className: 'corner corner-colorscheme'
 })
-const ColorschemeContent = () => 
+const ColorschemeContent = () =>
     Widget.Box({
+        hpack: 'center',
+        hexpand:false,
         children: [
+            topRightCorner,
             Widget.Box({
             className: 'osd-colorscheme spacing-v-5',
             vertical: true,
             hpack: 'center',
+            hexpand:false,
             children: [
                 Widget.Label({
                     xalign: 0,
@@ -279,24 +285,17 @@ const ColorschemeContent = () =>
                     ]
                 }),
                 ColorSchemeSettingsRevealer(),
-            ]
-        }),
+            ]}),
+        topLeftCorner,
     ]
     })
-const BorderedColorSchemeContent = () => Widget.Box({
-    className: 'bordered-corner-colorscheme',
-    children:[ 
-        topRightCorner,
-        ColorschemeContent(),
-        topLeftCorner,
-    ],
-})
+
 const isHoveredColorschemeSettings = Variable(false);
 
 export default () => Widget.Revealer({
     transition: 'slide_down',
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
-    child: BorderedColorSchemeContent(),
+    child:ColorschemeContent(),
     setup: (self) => {
         self
             .hook(showColorScheme, (revealer) => {

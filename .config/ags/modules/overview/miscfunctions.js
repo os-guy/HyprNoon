@@ -13,15 +13,15 @@ export const hasUnterminatedBackslash = str => /\\+$/.test(str);
 
 export function launchCustomCommand(command) {
     const [cmd, ...args] = command.toLowerCase().split(' ');
-    const execScript = (script, params = '') => 
+    const execScript = (script, params = '') =>
         execAsync([`bash`, `-c`, `${App.configDir}/scripts/${script}`, params]).catch(print);
-        
+
     const commands = {
         '>raw': () => {
             Utils.execAsync('hyprctl -j getoption input:accel_profile')
                 .then(output => {
                     const value = JSON.parse(output).str.trim();
-                    execAsync(['bash', '-c', 
+                    execAsync(['bash', '-c',
                         `hyprctl keyword input:accel_profile '${value != "[[EMPTY]]" && value != "" ? "[[EMPTY]]" : "flat"}'`
                     ]).catch(print);
                 });
@@ -30,7 +30,7 @@ export function launchCustomCommand(command) {
             if (!args[0]) return;
             const mode = parseInt(args[0]);
             if (isNaN(mode)) return;
-            
+
             const monitor = Hyprland.active.monitor.id || 0;
             updateMonitorShellMode(currentShellMode, monitor, mode.toString());
         },
@@ -43,8 +43,8 @@ export function launchCustomCommand(command) {
         '>dark': () => darkMode.value = true,
         '>badapple': () => {
             const userStateDir = GLib.get_user_state_dir();
-            execAsync([`bash`, `-c`, 
-                `mkdir -p ${userStateDir}/ags/user && 
+            execAsync([`bash`, `-c`,
+                `mkdir -p ${userStateDir}/ags/user &&
                  sed -i "3s/.*/monochrome/" ${userStateDir}/ags/user/colormode.txt`])
                 .then(() => execScript('color_generation/switchcolor.sh'))
                 .catch(print);
@@ -52,21 +52,21 @@ export function launchCustomCommand(command) {
         '>adw': () => execScript('color_generation/switchcolor.sh "#3584E4" --no-gradience', '&'),
         '>adwaita': () => execScript('color_generation/switchcolor.sh "#3584E4" --no-gradience', '&'),
         '>grad': () => execScript('color_generation/switchcolor.sh - --yes-gradience', '&'),
-        '>gradience': () => execScript('color_generation/switchcolor.sh - --yes-gradience', '&'), 
+        '>gradience': () => execScript('color_generation/switchcolor.sh - --yes-gradience', '&'),
         '>nograd': () => execScript('color_generation/switchcolor.sh - --no-gradience', '&'),
         '>nogradience': () => execScript('color_generation/switchcolor.sh - --no-gradience', '&'),
         '>material': () => {
             const userStateDir = GLib.get_user_state_dir();
-            execAsync([`bash`, `-c`, 
-                `mkdir -p ${userStateDir}/ags/user && 
+            execAsync([`bash`, `-c`,
+                `mkdir -p ${userStateDir}/ags/user &&
                  echo "material" > ${userStateDir}/ags/user/colorbackend.txt`])
                 .then(() => execScript('color_generation/switchwall.sh --noswitch'))
                 .catch(print);
         },
         '>pywal': () => {
             const userStateDir = GLib.get_user_state_dir();
-            execAsync([`bash`, `-c`, 
-                `mkdir -p ${userStateDir}/ags/user && 
+            execAsync([`bash`, `-c`,
+                `mkdir -p ${userStateDir}/ags/user &&
                  echo "pywal" > ${userStateDir}/ags/user/colorbackend.txt`])
                 .then(() => execScript('color_generation/switchwall.sh --noswitch'))
                 .catch(print);
@@ -105,13 +105,13 @@ export function launchCustomCommand(command) {
                 // Update user_options.default.json
                 const defaultConfigPath = GLib.get_home_dir() + '/.ags/config.json';
                 let defaultConfig = JSON.parse(Utils.readFile(defaultConfigPath));
-                
+
                 // Ensure the path exists
                 if (!defaultConfig.sidebar) defaultConfig.sidebar = {};
                 if (!defaultConfig.sidebar.ai) defaultConfig.sidebar.ai = {};
                 if (!defaultConfig.sidebar.ai.__custom) defaultConfig.sidebar.ai.__custom = ["extraGptModels"];
                 if (!defaultConfig.sidebar.ai.extraGptModels) defaultConfig.sidebar.ai.extraGptModels = {};
-                
+
                 // Add the model
                 defaultConfig.sidebar.ai.extraGptModels[provider] = modelConfig;
                 Utils.writeFile(JSON.stringify(defaultConfig, null, 2), defaultConfigPath);
@@ -124,7 +124,7 @@ export function launchCustomCommand(command) {
         '>lofi': () => {
             const musicDir = GLib.get_home_dir() + userOptions.asyncGet().music.musicDir || GLib.get_home_dir() + "/Music";
             const supportedFormats = /\.(mp3|wav|ogg|m4a|flac|opus)$/i;
-            
+
             try {
                 // Get all audio files
                 const dir = Gio.File.new_for_path(musicDir);
@@ -133,7 +133,7 @@ export function launchCustomCommand(command) {
                     Gio.FileQueryInfoFlags.NONE,
                     null
                 );
-                
+
                 const audioFiles = [];
                 let fileInfo;
                 while ((fileInfo = enumerator.next_file(null))) {
@@ -142,12 +142,12 @@ export function launchCustomCommand(command) {
                         audioFiles.push(filename);
                     }
                 }
-                
+
                 if (audioFiles.length > 0) {
                     // Pick a random file
                     const randomFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
                     const fullPath = `${musicDir}/${randomFile}`;
-                    
+
                     // Play using mpv (or fallback to xdg-open)
                     execAsync(['bash', '-c',`xdg-open "${fullPath}"` || `mpv "${fullPath}"` ])
                         .catch(error => {
@@ -166,7 +166,7 @@ export function launchCustomCommand(command) {
             // Parse the time string
             const timeStr = args[0].toLowerCase();
             let seconds = 0;
-            
+
             // Handle different time formats
             if (timeStr.includes('h')) {
                 const hours = parseFloat(timeStr);
@@ -191,17 +191,17 @@ export function launchCustomCommand(command) {
 
             // Get timer name (rest of arguments after time)
             const name = args.slice(1).join(' ') || `${Math.floor(seconds / 60)}min Timer`;
-            
+
             // Create and start the timer
             const timerId = timers.addTimer(name, seconds);
             timers.startTimer(timerId);
 
             // Send notification
-            const endTime = new Date(Date.now() + seconds * 1000).toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit' 
+            const endTime = new Date(Date.now() + seconds * 1000).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
             });
-            
+
             execAsync([
                 'notify-send',
                 `Timer Started: ${name}`,
@@ -236,13 +236,13 @@ export function ls({ path = '~', silent = false }) {
         const expandedPath = expandTilde(path).replace(/\/$/, '');
         const folder = Gio.File.new_for_path(expandedPath);
         const enumerator = folder.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
-        
+
         const contents = [];
         let fileInfo;
         while ((fileInfo = enumerator.next_file(null))) {
             const fileName = fileInfo.get_display_name();
             const isDirectory = fileInfo.get_file_type() === Gio.FileType.DIRECTORY;
-            
+
             contents.push({
                 parentPath: expandedPath,
                 name: fileName,
@@ -250,7 +250,7 @@ export function ls({ path = '~', silent = false }) {
                 icon: getFileIcon(fileInfo)
             });
         }
-        
+
         return contents.sort((a, b) => {
             const aIsFolder = a.type === 'folder';
             const bIsFolder = b.type === 'folder';
