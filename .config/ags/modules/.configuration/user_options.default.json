@@ -126,6 +126,7 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "extraCss":"min-width:500px",
     "ModuleCalendar" : {
         "enabled" : true,
         "visible" : true

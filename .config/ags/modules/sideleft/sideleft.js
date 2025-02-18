@@ -48,7 +48,7 @@ const pinButton = Button({
 
             const sideleftWindow = App.getWindow('sideleft');
             if (!sideleftWindow) return;
-            
+
             const sideleftContent = sideleftWindow.get_children()[0];
             if (!sideleftContent) return;
 
@@ -75,6 +75,7 @@ export const WidgetContent = (ORDER) => {
     return TabContainer({
         icons: CONTENTS.map((item) => item.materialIcon),
         names: CONTENTS.map((item) => item.friendlyName),
+        css: `${userOptions.asyncGet().sidebar.extraCss}`,
         children: CONTENTS.map((item) => item.content),
         className: 'sidebar-left spacing-v-10',
         setup: (self) => self.hook(App, (self, currentName, visible) => {

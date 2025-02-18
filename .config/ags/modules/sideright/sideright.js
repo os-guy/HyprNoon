@@ -34,7 +34,7 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 const config = userOptions.asyncGet();
-   
+
 export const calendarRevealer = Widget.Revealer({
     revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
@@ -229,7 +229,7 @@ const Cat = Widget.Button({
 export default () => Box({
     vexpand: true,
     hexpand: true,
-    css: 'min-width: 2px;',
+    css: `${userOptions.asyncGet().sidebar.extraCss}`,
     children: [
         EventBox({
             onPrimaryClick: () => App.closeWindow('sideright'),
