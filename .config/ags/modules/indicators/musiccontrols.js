@@ -122,10 +122,11 @@ const CoverArt = ({ player, ...rest }) => {
     const coverArtDrawingArea = Widget.DrawingArea({ className: 'osd-music-cover-art' });
     const coverArtDrawingAreaStyleContext = coverArtDrawingArea.get_style_context();
 
-    const fallbackCoverArt = Box({ // Fallback display when no cover art is available.
+    const fallbackCoverArt = Box({ 
         className: 'osd-music-cover-fallback',
         homogeneous: true,
-        children: [Label({
+        children: [
+            Label({
             className: 'icon-material txt-gigantic txt-thin',
             label: 'music_note',
         })]
@@ -176,31 +177,29 @@ const CoverArt = ({ player, ...rest }) => {
                         coverArtDrawingArea.queue_draw();
                     }).catch(print)
             },
-            'updateCover': (self) => {
-                if (!player || player.trackTitle == "" || !player.coverPath) {
-                    self.css = `background-image: none;`;
-                    App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
-                    return;
-                }
+          'updateCover': (self) => {
+    if (!player || player.trackTitle == "" || !player.coverPath) {
+        self.css = `background-image: none;`;
+        return;
+    }
 
-                const coverPath = player.coverPath;
-                const stylePath = `${player.coverPath}${darkMode.value ? '' : '-l'}${COVER_COLORSCHEME_SUFFIX}`;
-                if (player.coverPath == lastCoverPath) {
-                    Utils.timeout(200, () => {
-                        self.attribute.showImage(self, coverPath);
-                        self.css = `background-image: url('${coverPath}');`;
-                    });
-                }
-                lastCoverPath = player.coverPath;
-
-                if (fileExists(stylePath)) {
-                    self.attribute.showImage(self, coverPath)
-                    self.css = `background-image: url('${coverPath}');`;
-                    App.applyCss(stylePath);
-                    return;
-                }
-
-            },
+    const coverPath = player.coverPath;
+    const stylePath = `${player.coverPath}${darkMode.value ? '' : '-l'}${COVER_COLORSCHEME_SUFFIX}`;
+    if (player.coverPath == lastCoverPath) {
+        Utils.timeout(100, () => {
+            self.attribute.showImage(self, coverPath);
+            self.css = `background-image: url('${coverPath}');`;
+        });
+    } else {
+        lastCoverPath = player.coverPath;
+        if (fileExists(stylePath)) {
+            self.attribute.showImage(self, coverPath)
+            self.css = `background-image: url('${coverPath}');`;
+        } else {
+            self.css = `background-image: url('${coverPath}');`;
+        }
+    }
+},
         },
         setup: (self) => self.hook(player, (self) => {
             // When the player's cover-path changes, update the cover art.

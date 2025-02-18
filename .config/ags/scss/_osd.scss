@@ -82,7 +82,8 @@
 .osd-colorscheme {
     border-radius: 0 0 $rounding_large $rounding_large;
     background-color: $layer0;
-    padding: 0.313rem 0.626rem;
+    padding: 0 0.626rem;
+    border-bottom: 0.5px solid $outliner;
 }
 
 .osd-colorscheme-settings {

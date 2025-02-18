@@ -24,13 +24,13 @@ $bar_ws_width_focus_active: 6.045rem;
     background-color: $layer0;
     min-width: 1rem;
     @include full-rounding;
-    border: 0.6px solid $secondaryContainer
+    border: 0.6px solid $outliner;
 }
 .bar-notch {
     background-color: $layer0;
      min-width:16.1rem;
     border-radius: 0 0 $rounding_mediumlarge $rounding_mediumlarge;
-    border-bottom: 0.6px solid $secondaryContainer
+    border-bottom: 0.6px solid $outliner
 }
 .bar-resources {
     progressbar {
@@ -80,7 +80,7 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-floating {
     background-color:$layer0;
     @include elevation2;
-    border: 0.5px solid rgba($outline, 0.6);
+    // border: 0.5px solid rgba($outline, 0.6);
     @include anim-enter;
     @include normal-rounding;
 }
@@ -88,7 +88,7 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-floating-outline {
     background-color:$layer0;
     @include elevation2;
-    border: 0.5px solid rgba($onSurfaceVariant, 0.5);
+    // border: 0.5px solid rgba($onSurfaceVariant, 0.5);
     @include anim-enter;
     @include small-rounding;
 }

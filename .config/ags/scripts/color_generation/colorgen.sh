@@ -14,21 +14,26 @@ lightdark=""
 transparency=""
 materialscheme=""
 gowall=""
+border=""
+
 if [ ! -f $colormodefile ]; then
     echo "dark" > $colormodefile
     echo "opaque" >> $colormodefile
     echo "content" >> $colormodefile
-    echo "" >> $colormodefile
-elif [[ $(wc -l < $colormodefile) -ne 4 || $(wc -w < $colormodefile) -ne 4 ]]; then
+    echo "none" >> $colormodefile
+    echo "noborder" >> $colormodefile
+elif [[ $(wc -l < $colormodefile) -ne 5 || $(wc -w < $colormodefile) -ne 5 ]]; then
     echo "dark" > $colormodefile
     echo "opaque" >> $colormodefile
     echo "content" >> $colormodefile
-    echo "" >> $colormodefile
+    echo "none" >> $colormodefile
+    echo "noborder" >> $colormodefile
 else
     lightdark=$(sed -n '1p' $colormodefile)
     transparency=$(sed -n '2p' $colormodefile)
     materialscheme=$(sed -n '3p' $colormodefile)
-    gowall=(sed -n '4p' $colormodefile)
+    gowall=$(sed -n '4p' $colormodefile)
+    border=$(sed -n '5p' $colormodefile)
 fi
 
 # Get the color mode
@@ -43,7 +48,6 @@ if [ -f "$COLORMODE_FILE_DIR" ]; then
 fi
 
 cd "$CONFIG_DIR/scripts/" || exit
-
 # Store the image source if it's an image
 if [[ ! "$1" = "#"* ]]; then # this is an image
     # Store the image path
@@ -51,4 +55,3 @@ if [[ ! "$1" = "#"* ]]; then # this is an image
 fi
     matugen image "$1" -m "$lightdark" -t "scheme-$materialscheme" &&
     agsv1 run-js "handleStyles(false);"
-

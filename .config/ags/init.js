@@ -7,17 +7,18 @@ export const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generat
 globalThis['handleStyles'] = (resetMusic) => {
     // Reset
     Utils.exec(`mkdir -p "${GLib.get_user_state_dir()}/ags/scss"`);
-    if (resetMusic) {
-        //Utils.exec(`bash -c 'echo "" > ${GLib.get_user_state_dir()}/ags/scss/_musicwal.scss'`); // reset music styles
-        //Utils.exec(`bash -c 'echo "" > ${GLib.get_user_state_dir()}/ags/scss/_musicmaterial.scss'`); // reset music styles
-    }
+    // if (resetMusic) {
+    //     Utils.exec(`bash -c 'echo "" > ${GLib.get_user_state_dir()}/ags/scss/_musicwal.scss'`); // reset music styles
+    //     Utils.exec(`bash -c 'echo "" > ${GLib.get_user_state_dir()}/ags/scss/_musicmaterial.scss'`); // reset music styles
+    // }
     // Generate overrides
     let lightdark = darkMode.value ? "light" : "dark";
     Utils.writeFileSync(
         `@mixin symbolic-icon {
-    -gtk-icon-theme: '${userOptions.asyncGet().icons.symbolicIconTheme[lightdark]}';}`,
+        -gtk-icon-theme: '${userOptions.asyncGet().icons.symbolicIconTheme[lightdark]}';}`,
         `${GLib.get_user_state_dir()}/ags/scss/_lib_mixins_overrides.scss`)
-    // Compile and apply
+    
+        // Compile and apply
     async function applyStyle() {
         Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
         Utils.exec(`sass -I "${GLib.get_user_state_dir()}/ags/scss" -I "${App.configDir}/scss/fallback" "${App.configDir}/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"`);

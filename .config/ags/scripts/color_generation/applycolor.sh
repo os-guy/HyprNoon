@@ -9,47 +9,34 @@ STATE_DIR="$XDG_STATE_HOME/ags"
 colormodefile="$STATE_DIR/user/colormode.txt"
 
 if [ ! -d "$CACHE_DIR"/user/generated ]; then
-    mkdir -p "$CACHE_DIR"/user/generated
+    mkdir -p "$CACHE_DIR"/user/generated/colormode.txt
+    touch "$STATE_DIR"/user/generated/ags_transparency.txt
 fi
 cd "$CONFIG_DIR" || exit
 
-colornames=''
-colorstrings=''
-colorlist=()
-colorvalues=()
-
-
 # Fetch second line from color mode file
 secondline=$(sed -n '2p' "$colormodefile")
+fifthline=$(sed -n '5p' "$colormodefile")
 
-# Determine terminal opacity based on the second line
 if [[ "$secondline" == *"transparent"* ]]; then # Set for transparent background
-    term_alpha=75 
     ags_transparency=True
     hypr_opacity=0.9
-    hypr_blur=true
     rofi_alpha=#00000090
     rofi_alpha_element=#00000025
 else #Opaque Stuff
-    term_alpha=100 
     ags_transparency=False
     hypr_opacity=1
-    hypr_blur=false
     rofi_alpha="var(surface)"
     rofi_alpha_element="var(surface-container-low)"
 fi
 
-transparentize() {
-  local hex="$1"
-  local alpha="$2"
-  local red green blue
-
-  red=$((16#${hex:1:2}))
-  green=$((16#${hex:3:2}))
-  blue=$((16#${hex:5:2}))
-
-  printf 'rgba(%d, %d, %d, %.2f)\n' "$red" "$green" "$blue" "$alpha"
-}
+if [[ "$fifthline" == *"noborder"* ]]; then 
+   ags_border=False
+   hypr_border="0"
+else
+   ags_border=True
+   hypr_border="2"
+fi
 
 get_light_dark() {
     lightdark=""
@@ -60,6 +47,7 @@ get_light_dark() {
     fi
     echo "$lightdark"
 }
+
 apply_lightdark() {
     lightdark=$(get_light_dark)
     if [ "$lightdark" = "light" ]; then
@@ -69,25 +57,32 @@ apply_lightdark() {
     fi
 }
 
-apply_transparency() {
-    # Ags
-    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.config/ags/scss/mode.scss
+update_ags() { 
     agsv1 run-js "handleStyles(false);"
-    # Rofi 
-    sed -i "s/wbg:.*;/wbg:$rofi_alpha;/" ~/.config/rofi/config.rasi
-    sed -i "s/element-bg:.*;/element-bg:$rofi_alpha_element;/" ~/.config/rofi/config.rasi
-    # Hyprland
-    hyprctl getoption decoration:blur:ignore_opacity:$hypr_blur
-    sed -i "s/windowrule = opacity .*\ override/windowrule = opacity $hypr_opacity override/" ~/.config/hypr/hyprland/rules/default.conf     
-    # Terminal
-    sed -i "s/\$alpha/$term_alpha/g" "$CACHE_DIR/user/generated/terminal/sequences.txt"
 }
 
-colornames=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f1)
-colorstrings=$(cat $STATE_DIR/scss/_material.scss | cut -d: -f2 | cut -d ' ' -f2 | cut -d ";" -f1)
-IFS=$'\n'
-colorlist=( $colornames ) # Array of color names
-colorvalues=( $colorstrings ) # Array of color values
+# hyprctl keyword general:border_size $hypr_border
+apply_borders() {
+    sed -i "s/border:.*;/border:$ags_border;/" ~/.config/ags/scss/mode.scss
+}
+
+
+apply_transparency() {
+    # Ags
+    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.config/ags/scss/mode.scss &
+    # Rofi 
+    sed -i "s/wbg:.*;/wbg:$rofi_alpha;/" ~/.config/rofi/config.rasi &
+    sed -i "s/element-bg:.*;/element-bg:$rofi_alpha_element;/" ~/.config/rofi/config.rasi &
+    # Hyprland
+    sed -i "s/windowrule = opacity .*\ override/windowrule = opacity $hypr_opacity override/" ~/.config/hypr/hyprland/rules/default.conf  &
+}
 
 apply_lightdark &
+wait
 apply_transparency &
+wait 
+apply_borders &
+wait 
+update_ags &
+wait
+exit 0

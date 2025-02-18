@@ -33,9 +33,10 @@ import GLib from 'gi://GLib';
 // import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
-
+const config = userOptions.asyncGet();
+   
 export const calendarRevealer = Widget.Revealer({
-    revealChild: false,
+    revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
     transition: 'slide_up',
 });
@@ -90,7 +91,6 @@ const modulesList = {
 
 // Get enabled modules from config
 const getEnabledModules = () => {
-    const config = userOptions.asyncGet();
     const enabledModules = config.sidebar.centerModules.enabled || [];
     return enabledModules
         .filter(moduleId => {
@@ -179,7 +179,7 @@ const togglesBox = Widget.Box({
         //await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         await ModuleNightLight(),
         await ModuleGameMode(),
-        ToggleIconCalendar(), // Add the calendar toggle here
+        userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? await ToggleIconCalendar() : null, // Add the calendar toggle here
         ModuleIdleInhibitor(),
         ModuleSettingsIcon(),
         await ModuleCloudflareWarp(),
@@ -262,7 +262,7 @@ export default () => Box({
                         sidebarOptionsStack,
                     ],
                 }),
-                calendarRevealer
+                userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? calendarRevealer : null
             ]
         }),
     ],
