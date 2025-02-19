@@ -1,17 +1,14 @@
 const { Gio, GLib } = imports.gi;
 import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import PopupWindow from '../.widgethacks/popupwindow.js';
 import { ConfigToggle, ConfigMulipleSelection } from '../.commonwidgets/configwidgets.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync } = Utils;
-const { Box } = Widget;
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
+import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
-
 const ColorBox = ({
     name = 'Color',
     ...rest
@@ -34,14 +31,14 @@ const ColorSchemeSettingsRevealer = () => {
             headerButtonIcon.label = content.revealChild ? 'expand_less' : 'expand_more';
         },
         setup: setupCursorHover,
-        hpack: 'center',
+        hpack: 'end',
         child: headerButtonIcon,
     });
 
     const content = Widget.Revealer({
         revealChild: false,
         transition: 'slide_down',
-        transitionDuration: userOptions.asyncGet().animations.durationLarge,
+        transitionDuration: 750,
         child: ColorSchemeSettings(),
         setup: (self) => self.hook(isHoveredColorschemeSettings, (revealer) => {
             if (isHoveredColorschemeSettings.value == false) {
@@ -63,8 +60,8 @@ const ColorSchemeSettingsRevealer = () => {
         child: Widget.Box({
             vertical: true,
             children: [
-                content,
                 header,
+                content,
             ]
         }),
     });
@@ -86,13 +83,35 @@ const gowallArr = [
         { name: getString('Dracula'), value: 'dracula' },
         { name: getString('Tokyo'), value: 'tokyo-night' },
         { name: getString('Everforest'), value: 'everforest' },
+    ],
+    [
         { name: getString('Gruvbox'), value: 'gruvbox' },
         { name: getString('One Dark'), value: 'onedark' },
         { name: getString('Solarized'), value: 'solarized' },
         { name: getString('Cyber'), value: 'cyberpunk' },
         { name: getString('B&W'), value: 'monochrome' },
     ],
-  
+     [
+         { name: getString('Atom One Light'), value: 'nord' },
+         { name: getString('Sweet'), value: 'everforest' },
+         { name: getString('Synthwave 84'), value: 'synthwave84' },
+     ],
+     [
+         { name: getString('Atom Dark'), value: 'gruvbox' },
+         { name: getString('Ocianic Next'), value: 'dracula' },
+         { name: getString('Shades of Purple'), value: 'tokyo-night' },
+         { name: getString('Arc Dark'), value: 'onedark' },
+     ],
+    // [
+    //     { name: getString('Sunset Aurant'), value: 'catppuccin' },
+    //     { name: getString('Sunset Saffron'), value: 'nord' },
+    //     { name: getString('Sunset Tangerine'), value: 'everforest' },
+    // ],
+    // [
+    //     { name: getString('Night Owl'), value: 'gruvbox' },
+    //     { name: getString('Github Black'), value: 'dracula' },
+    //     { name: getString('Github White'), value: 'tokyo-night' },
+    // ],
 ];
 const schemeOptionsArr = [
     [
@@ -100,6 +119,8 @@ const schemeOptionsArr = [
         { name: getString('Fruit Salad'), value: 'fruit-salad' },
         { name: getString('Fidelity'), value: 'fidelity' },
         { name: getString('Rainbow'), value: 'rainbow' },
+    ],
+    [
         { name: getString('Neutral'), value: 'neutral' },
         { name: getString('Monochrome'), value: 'monochrome' },
         { name: getString('Expressive'), value: 'expressive' },
@@ -107,19 +128,19 @@ const schemeOptionsArr = [
     ]
 
 ];
-export const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
+const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 
-export const initTransparency = Utils.exec(`bash -c "sed -n \'2p\' ${LIGHTDARK_FILE_LOCATION}"`);
-export const initTransparencyVal = (initTransparency == "transparent") ? 1 : 0;
+const initTransparency = Utils.exec(`bash -c "sed -n \'2p\' ${LIGHTDARK_FILE_LOCATION}"`);
+const initTransparencyVal = (initTransparency == "transparent") ? 1 : 0;
 
-export const initBorder = Utils.exec(`bash -c "sed -n \'5p\' ${LIGHTDARK_FILE_LOCATION}"`);
-export const initBorderVal = (initBorder == "border") ? 1 : 0;
+const initBorder = Utils.exec(`bash -c "sed -n \'5p\' ${LIGHTDARK_FILE_LOCATION}"`);
+const initBorderVal = (initBorder == "borders") ? 1 : 0;
 
-export const initScheme = Utils.exec(`bash -c "sed -n \'3p\' ${LIGHTDARK_FILE_LOCATION}"`);
-export const initSchemeIndex = calculateSchemeInitIndex(schemeOptionsArr, initScheme);
+const initScheme = Utils.exec(`bash -c "sed -n \'3p\' ${LIGHTDARK_FILE_LOCATION}"`);
+const initSchemeIndex = calculateSchemeInitIndex(schemeOptionsArr, initScheme);
 
-export const initGowall = Utils.exec(`bash -c "sed -n \'4p\' ${LIGHTDARK_FILE_LOCATION}"`);
-export const initGowallIndex = calculateSchemeInitIndex(gowallArr, initGowall);
+const initGowall = Utils.exec(`bash -c "sed -n \'4p\' ${LIGHTDARK_FILE_LOCATION}"`);
+const initGowallIndex = calculateSchemeInitIndex(gowallArr, initGowall);
 
 const ColorSchemeSettings = () => Widget.Box({
     className: 'osd-colorscheme-settings spacing-v-5 margin-20',
@@ -128,7 +149,6 @@ const ColorSchemeSettings = () => Widget.Box({
     children: [
         Widget.Box({
             vertical: true,
-            css:`margin-top:1rem`,
             children: [
                 Widget.Label({
                     xalign: 0,
@@ -175,21 +195,21 @@ const ColorSchemeSettings = () => Widget.Box({
                             await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
                        },
                     }),
-                ConfigToggle({
-                icon: 'ripples',
-                name: getString('Borders'),
-                desc: getString('Make Everything Bordered'),
-                initValue: initBorderVal,
-                onChange: async (self, newValue) => {
-                try {
-                                   const border = newValue == 0 ? "noborder" : "border";
-                                   await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "5s/.*/${border}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
+                       ConfigToggle({
+                           icon: 'border_clear',
+                           name: getString('Borders'),
+                           desc: getString('Make Everything Bordered'),
+                           initValue: initBorderVal,
+                           onChange: async (self, newValue) => {
+                               try {
+                                   const borders = newValue == 0 ? "border" : "noborders";
+                                   await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "5s/.*/${borders}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
                                    await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
-                } catch (error) {
+                               } catch (error) {
                                    console.error('Error changing border mode:', error);
                                }
-                },
-                }),
+                           },
+                        }),
             ]
         }),
         Widget.Box({
@@ -199,7 +219,7 @@ const ColorSchemeSettings = () => Widget.Box({
                 Widget.Label({
                     xalign: 0,
                     className: 'txt-norm titlefont onSurfaceVariant',
-                    label: getString('Color Modes'),
+                    label: getString('Scheme styles'),
                     hpack: 'center',
                 }),
                 //////////////////
@@ -241,17 +261,15 @@ const ColorschemeContent = () =>
             Widget.Box({
                 className: 'osd-colorscheme spacing-v-5',
                 vertical: true,
-                spacing: 4,
-                children: [
-                    Widget.Label({
-                        xalign: 0,
-                        css: `margin-top: 0.75rem;`,
-                        className: 'txt-large titlefont txt',
-                        label: getString('Appearance & Looks'),
-                        hpack: 'center',
-                        vpack: 'center',
-                    }),
-                    Widget.Box({
+            hexpand:true,
+            children: [
+                Widget.Label({
+                    xalign: 0,
+                    className: 'txt-large titlefont txt',
+                    label: getString('Color scheme'),
+                    hpack: 'center',
+                }),
+                Widget.Box({
                     className: 'spacing-h-5',
                     hpack: 'center',
                     children: [
@@ -261,6 +279,12 @@ const ColorschemeContent = () =>
                         ColorBox({ name: 'Sf', className: 'osd-color osd-color-surface' }),
                         ColorBox({ name: 'Sf-i', className: 'osd-color osd-color-inverseSurface' }),
                         ColorBox({ name: 'E', className: 'osd-color osd-color-error' }),
+                    ]
+                }),
+                Widget.Box({
+                    className: 'spacing-h-5',
+                    hpack: 'center',
+                    children: [
                         ColorBox({ name: 'P-c', className: 'osd-color osd-color-primaryContainer' }),
                         ColorBox({ name: 'S-c', className: 'osd-color osd-color-secondaryContainer' }),
                         ColorBox({ name: 'T-c', className: 'osd-color osd-color-tertiaryContainer' }),
@@ -270,28 +294,32 @@ const ColorschemeContent = () =>
                     ]
                 }),
                 ColorSchemeSettingsRevealer(),
+                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
             ]
         }),
-        RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
     ]
     })
 const isHoveredColorschemeSettings = Variable(false);
 
-export default () => PopupWindow({
-    keymode: 'on-demand',
-    anchor: ['top'],
-    exclusivity:"ignore",
-    layer: 'top',
-    name: 'colorscheme',
-    child:Box({
-            children:[
-            Widget.Box({
-            vertical: true,
-            children:[
-                ColorschemeContent(),
-                clickCloseRegion({ name: 'colorscheme', multimonitor: false, fillMonitor: 'vertical' }),
-            ]
-        }),
-    ]
+export default () => Widget.Revealer({
+    transition: 'slide_down',
+    transitionDuration: userOptions.asyncGet().animations.durationLarge + 150,
+    child: ColorschemeContent(),
+    setup: (self) => {
+        self
+            .hook(showColorScheme, (revealer) => {
+                if (showColorScheme.value == true)
+                    revealer.revealChild = true;
+                else
+                    revealer.revealChild = isHoveredColorschemeSettings.value;
+            })
+            .hook(isHoveredColorschemeSettings, (revealer) => {
+                if (isHoveredColorschemeSettings.value == false) {
+                    setTimeout(() => {
+                        if (isHoveredColorschemeSettings.value == false)
+                            revealer.revealChild = showColorScheme.value;
+                    }, 800);
+                }
+            })
+    },
 })
-});

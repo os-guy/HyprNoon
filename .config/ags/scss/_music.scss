@@ -22,9 +22,10 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
 
 .osd-music {
     @include menu_decel;
-    @include elevation2;
-    margin-top: 1.13rem;
-    @include normal-rounding;
+    // @include elevation2;
+    // margin-top: 1.13rem;
+    // @include normal-rounding;
+    border-radius: 0 0 $rounding_medium $rounding_medium;
     min-height: 10.159rem;
     border: 0.2px solid $outliner;
     background-color: $layer0;
@@ -38,7 +39,10 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     //     linear-gradient($background, $background), // We don't want wallpaper tint, so here's a fully opaque surface
     // ;
 }
-
+.corner-music {
+    @include large-rounding;
+    background-color: $background
+}
 
 .osd-music-cover-fallback {
     @include element_decel;

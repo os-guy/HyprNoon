@@ -30,5 +30,4 @@ fi
 # Set the new GTK text scaling factor.
 gsettings set org.gnome.desktop.interface text-scaling-factor "$NEW"
 
-echo "GTK text scaling factor updated from $CURRENT to $NEW"
-
+exit 0

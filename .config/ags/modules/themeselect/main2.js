@@ -1,14 +1,12 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Indicator from '../../services/indicator.js';
-import IndicatorValues from './indicatorvalues.js';
-import NotificationPopups from './notificationpopups.js';
+import ColorScheme from './colorscheme.js';
 
-export const Indicators = (monitor = 0) => Widget.Window({
-    name: `indicator${monitor}`,
-    monitor,
+export default () => Widget.Window({
+    name: `scheme`,
     className: 'indicator',
     layer: 'overlay',
-    // exclusivity: 'ignore',
+    exclusivity: 'ignore',
     visible: true,
     anchor: ['top'],
     child: Widget.EventBox({
@@ -20,8 +18,7 @@ export const Indicators = (monitor = 0) => Widget.Window({
             className: 'osd-window',
             css: 'min-height: 2px;',
             children: [
-                NotificationPopups(),
-                IndicatorValues(monitor),
+                ColorScheme(),
             ]
         })
     }),

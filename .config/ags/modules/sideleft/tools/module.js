@@ -9,11 +9,11 @@ export default ({
     child,
     revealChild = true,
 }) => {
-    const headerButtonIcon = MaterialIcon(revealChild ? 'expand_less' : 'expand_more', 'norm');
+    const headerButtonIcon = MaterialIcon(revealChild ? 'expand_more' : 'expand_less', 'norm');
     const header = Button({
         onClicked: () => {
             content.revealChild = !content.revealChild;
-            headerButtonIcon.label = content.revealChild ? 'expand_less' : 'expand_more';
+            headerButtonIcon.label = content.revealChild ? 'expand_more' : 'expand_less';
         },
         setup: setupCursorHover,
         child: Box({

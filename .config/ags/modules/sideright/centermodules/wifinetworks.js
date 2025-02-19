@@ -7,7 +7,7 @@ const { execAsync, exec } = Utils;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
 import { ConfigToggle } from '../../.commonwidgets/configwidgets.js';
-
+import { download , upload } from '../../.commonwidgets/networkspeed.js';
 const MATERIAL_SYMBOL_SIGNAL_STRENGTH = {
     'network-wireless-signal-excellent-symbolic': "signal_wifi_4_bar",
     'network-wireless-signal-good-symbolic': "network_wifi_3_bar",
@@ -134,7 +134,7 @@ const CurrentNetwork = () => {
                 }),
                 Entry({
                     className: 'sidebar-wifinetworks-auth-entry',
-                    visibility: false, // Password dots
+                    visibility: userOptions.asyncGet().etc.showPassword,
                     onAccept: (self) => {
                         authLock = false;
                         networkAuth.revealChild = false;
@@ -165,8 +165,18 @@ const CurrentNetwork = () => {
                         children: [
                             MaterialIcon('language', 'hugerass'),
                             networkName,
-                            // networkBandwidth,
-                            networkStatus,
+                            // networkStatus,
+                            Box({
+                                css:`margin-right:1rem`,
+                                vertical:true,
+                                vpack:'center',
+                                hexpand: true,
+                                hpack:'end',
+                                children: [
+                                    download,
+                                    upload,
+                                ]
+                            }),
 
                         ]
                     }),
@@ -186,16 +196,6 @@ const CurrentNetwork = () => {
         })]
     })
 }
-// const networkBandwidth = Box({
-//     vertical: true,
-//     hexpand: true,
-//     hpack: 'center',
-//     className: 'sidebar-wifinetworks-bandwidth',
-//     children: [
-//         NetResource('arrow_warm_up', `${App.configDir}/scripts/network_bandwidth.py sent`),
-//         NetResource('arrow_cool_down', `${App.configDir}/scripts/network_bandwidth.py recv`),
-//     ]
-// });
 export default (props) => {
     const networkList = Box({
         vertical: true,

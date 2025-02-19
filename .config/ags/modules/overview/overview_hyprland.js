@@ -16,10 +16,10 @@ import { dumpToWorkspace, swapWorkspace } from "./actions.js";
 import { iconExists, substitute } from "../.miscutils/icons.js";
 import { monitors } from '../.commondata/hyprlanddata.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
-
+import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 // Cache user options
 const userOpts = userOptions.asyncGet();
-const NUM_OF_WORKSPACES_SHOWN = userOpts.overview.numOfCols * userOpts.overview.numOfRows;
+const NUM_OF_WORKSPACES_SHOWN = 5 * userOpts.overview.numOfRows;
 const TARGET = [Gtk.TargetEntry.new('text/plain', Gtk.TargetFlags.SAME_APP, 0)];
 
 const overviewTick = Variable(false);
@@ -51,7 +51,7 @@ export default (overviewMonitor = 0) => {
     })
 
     const Window = ({ address, at: [x, y], size: [w, h], workspace: { id }, class: c, initialClass, monitor, title, xwayland }, screenCoords) => {
-        const scale = userOpts.overview.scale;
+        const scale = userOpts.overview.scale || 0.24;
         const revealInfoCondition = (Math.min(w, h) * scale > 70);
         if (w <= 0 || h <= 0 || (c === '' && title === '')) return null;
         
@@ -386,18 +386,33 @@ export default (overviewMonitor = 0) => {
 
     return Widget.Revealer({
         revealChild: true,
-        hpack: 'center',
+        hpack: 'fill',
         transition: 'slide_down',
-        transitionDuration: userOpts.animations.durationLarge,
-        child: Widget.Box({
-            vertical: true,
-            className: 'overview-tasks',
-            children: Array.from({ length: userOpts.overview.numOfRows }, (_, index) =>
-                OverviewRow({
-                    startWorkspace: 1 + index * userOpts.overview.numOfCols,
-                    workspaces: userOpts.overview.numOfCols,
-                })
+        transitionDuration: userOpts.animations.durationSmall,
+        child:Widget.Box({
+            vertical:true,
+            children:[
+              Widget.Box({
+                vertical: true,
+                hexpand:true,
+                className: 'overview-tasks',
+                children: Array.from({ length: userOpts.overview.numOfRows }, (_, index) =>
+                    OverviewRow({
+                        startWorkspace: 1 + index * 5,
+                        workspaces: 5,
+                     })
             )
         }),
+        Widget.Box({
+            children:[
+                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
+                Widget.Box({hexpand:true}),
+                RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
+
+            ]
+        })
+
+        ],
+        })
     });
 }

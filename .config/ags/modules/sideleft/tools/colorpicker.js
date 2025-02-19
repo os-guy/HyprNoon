@@ -256,6 +256,14 @@ export default () => {
         },
         copyCallback: () => Utils.execAsync(['wl-copy', `hsl(${selectedColor.hue},${selectedColor.xAxis}%,${Math.round(selectedColor.yAxis / (1 + selectedColor.xAxis / 100))}%)`]),
     })
+    const applybutton = Button({
+        className: 'button-accent generate-thumbnails',
+        css:`margin-top:1.5rem`,
+        onClicked: () => {
+            Utils.execAsync(['matugen','color', "rgb",`rgb(${hslToRgbValues(selectedColor.hue, selectedColor.xAxis, selectedColor.yAxis / (1 + selectedColor.xAxis / 100))})`]).catch(print)},
+        label: 'Apply',
+        setup: setupCursorHover,
+    });
     const result = Box({
         className: 'sidebar-module-colorpicker-result-area spacing-v-5 txt',
         hexpand: true,
@@ -265,6 +273,7 @@ export default () => {
             resultHex,
             resultRgb,
             resultHsl,
+            applybutton
         ]
     })
     return SidebarModule({

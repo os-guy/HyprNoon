@@ -7,7 +7,7 @@ const { execAsync, exec } = Utils;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
 import { ConfigGap, ConfigSpinButton, ConfigToggle } from '../../.commonwidgets/configwidgets.js';
-
+import { initBorder, initBorderVal, initTransparencyVal,initTransparency, initScheme, initSchemeIndex, initGowall, initGowallIndex } from './../../indicators/colorscheme.js';
 const HyprlandToggle = ({ icon, name, desc = null, option, enableValue = 1, disableValue = 0, extraOnChange = () => { } }) => ConfigToggle({
     icon: icon,
     name: name,
@@ -62,18 +62,47 @@ export default (props) => {
                 ConfigSection({
                     name: getString('Effects'), children: [
                         ConfigToggle({
+                            icon: 'dark_mode',
+                            name: getString('Dark Mode'),
+                            desc: getString('Ya should go to sleep!'),
+                            initValue: darkMode.value,
+                            onChange: (_, newValue) => {
+                                darkMode.value = !!newValue;
+                            },
+                            extraSetup: (self) => self.hook(darkMode, (self) => {
+                                self.enabled.value = darkMode.value;
+                            }),
+                        }),
+                        ConfigToggle({
                             icon: 'border_clear',
                             name: getString('Transparency'),
-                            desc: getString('[AGS]\nMake shell elements transparent\nBlur is also recommended if you enable this'),
-                            initValue: exec(`bash -c "sed -n \'2p\' ${GLib.get_user_state_dir()}/ags/user/colormode.txt"`) == "transparent",
-                            onChange: (self, newValue) => {
-                                const transparency = newValue == 0 ? "opaque" : "transparent";
-                                console.log(transparency);
-                                execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`])
-                                    .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]))
-                                    .catch(print);
+                            desc: getString('Make Everything transparent'),
+                            initValue: initTransparencyVal,
+                            onChange: async (self, newValue) => {
+                                try {
+                                    const transparency = newValue == 0 ? "opaque" : "transparent";
+                                    await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
+                                    await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                                } catch (error) {
+                                    console.error('Error changing transparency:', error);
+                                }
                             },
                         }),
+                        ConfigToggle({
+                            icon: 'ripples',
+                            name: getString('Borders'),
+                            desc: getString('Make Everything Bordered'),
+                            initValue: initBorderVal,
+                            onChange: async (self, newValue) => {
+                            try {
+                                               const border = newValue == 0 ? "noborder" : "border";
+                                               await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "5s/.*/${border}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
+                                               await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                            } catch (error) {
+                                               console.error('Error changing border mode:', error);
+                                           }
+                            },
+                            }),
                         ConfigToggle({
                             icon: 'image',
                             name: getString('GoWall'),

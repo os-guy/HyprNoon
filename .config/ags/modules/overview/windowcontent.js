@@ -15,6 +15,7 @@ import {
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import GeminiService from '../../services/gemini.js';
 import { Writable, writable, waitLastAction } from '../.miscutils/store.js';
+import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 
 // Добавляем математические функции
 const { abs, sin, cos, tan, cot, asin, acos, atan, acot } = Math;
@@ -106,9 +107,10 @@ export const SearchAndWindows = () => {
         transitionDuration: options.animations.durationLarge,
         revealChild: true,
         hpack: 'center',
+        vpack:'center',
         child: Widget.Label({
             className: 'overview-search-prompt txt-small txt',
-            label: getString(`hi ${GLib.get_real_name()} ! Lets Dive!`),
+            label: getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`),
         }),
     });
 
@@ -202,30 +204,36 @@ export const SearchAndWindows = () => {
             resultsBox.show_all();
         },
     });
-
+    const EntryBarContent = () => Widget.Box({
+        vertical:true,
+        children:[
+            Widget.Box({
+                children: [
+                    // RoundedCorner('bottomright', {vpack:'end',className: 'corner corner-colorscheme'}),
+                    entry,
+                    entryIcon,
+                    Widget.Box({
+                    className: 'overview-search-icon-box',
+                    setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
+                    }),
+                    // RoundedCorner('bottomleft', {vpack:'end',className: 'corner corner-colorscheme'}),
+                ],
+            }),
+        ]
+    })  
     return Widget.Box({
         vertical: true,
+        // spacing:10,
         children: [
-            Widget.Overlay({
-                child:overviewContent,
-                overlays:[
-                    Widget.Box({
-                        hpack: 'center',
-                        vexpand:false,
-                        vpack:'start',
-                        css:`margin-top: 1rem;`,
-                        children: [
-                            entry,
-                            Widget.Box({
-                                className: 'overview-search-icon-box',
-                            setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
-                        }),
-                        entryIcon,
-                    ]
-                }),
-            ],
-        }),
-        resultsRevealer,
+            Widget.Box({
+                hpack: 'center',
+                hexpand:true,
+                children: [
+                    EntryBarContent()
+                ]
+            }),
+            userOptions.asyncGet().overview.enableContent ? overviewContent : null || true,
+            resultsRevealer,
         ],
         setup: (self) => self
             .hook(App, (_b, name, visible) => {

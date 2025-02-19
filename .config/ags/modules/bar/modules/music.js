@@ -1,6 +1,5 @@
 import Mpris from "resource:///com/github/Aylur/ags/service/mpris.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-import { showMusicControls } from "../../../variables.js";
 import GLib from 'gi://GLib';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
@@ -43,7 +42,7 @@ export default () =>
   EventBox({
     className: "onSurface",
     onPrimaryClick: () => {
-      App.toggleWindow('ipod');
+      App.toggleWindow('musiccontrols');
     },
     setup: (self) => self.hook(Mpris, () => {
       const player = findPlayer();

@@ -1,50 +1,63 @@
-const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-import Indicators from "../normal/spaceright.js";
+import { StatusIcons } from "../../.commonwidgets/statusicons.js";
 import BarBattery from "../modules/battery.js";
-import ScrolledModule from "../../.commonwidgets/scrolledmodule.js";
-import NormalOptionalWorkspaces  from "../normal/workspaces_simple.js";
-import FocusOptionalWorkspaces  from "../normal/workspaces_hyprland.js";
-import Utils from "../modules/utils.js";
-import media from "../modules/media.js";
+import SimpleWS  from "../normal/workspaces_simple.js";
+import InLineClock from "../modules/inline_clock.js";
 import { getDistroIcon } from "../../.miscutils/system.js";
-import MaClock from "../modules/maclock.js";
+import Scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
+import Shortcuts from "../modules/utils.js";
 const { Box , EventBox } = Widget;
-const macBar = async () => {
-  const opts = userOptions.asyncGet();
-  const workspaces = opts.bar.elements.showWorkspaces;
-  const indicators = opts.bar.elements.showIndicators;
+
+const barStatusIcons = StatusIcons(
+  {
+    className: "onSurfaceVariant",
+    // setup: (self) =>
+    //   self.hook(App, (self, currentName, visible) => {
+    //     // if (currentName === "sideright") {
+    //     //   self.toggleClassName("bar-statusicons-active", visible);
+    //     // }
+    //   }),
+  },
+);
+const IslandBarContent = async () => {
   return Widget.CenterBox({
-    className: "bar-bg",
     startWidget: Widget.Box({
-      css: "margin-left:1.8rem;",
+      className: "bar-floating",
+      css: "margin: 1rem 0 0 3rem;padding: 0.3rem 2rem",
+      spacing:15,
+      hpack:'start',
+      // homogeneous: true,
       children: [
-        ScrolledModule({
+        Scrolledmodule({
           children: [
             EventBox({
               child: Widget.Icon({
                 icon: getDistroIcon(),
-                className: 'txt txt-larger',
+                className: 'txt onSurfaceVariant txt-larger',
             }),
               onPrimaryClick: () => {
                 App.toggleWindow("sideleft");
               },
-            }),
-           
-           BarBattery()
+            }),         
+      Widget.Overlay({
+        child:BarBattery(),
+        overlays:[SimpleWS()]
+      }),           
           ],
         }),
-        NormalOptionalWorkspaces
+       
+        InLineClock(),
+        barStatusIcons,
       ],
     }),
-    centerWidget: Widget.Box(),
-    endWidget: Widget.Box({
-      children: [
-        Indicators(),
-        MaClock()
-    ],
+    centerWidget:Scrolledmodule({
+      children:[
+        Widget.Box(),
+        Shortcuts()
+      ]
     }),
+    endWidget:null
   });
 };
 
-export const MacBar = await macBar();
+export const IslandBar = await IslandBarContent();

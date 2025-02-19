@@ -70,6 +70,7 @@ const scripts = [
 export default () => SidebarModule({
     icon: MaterialIcon('code', 'norm'),
     name: getString('Quick scripts'),
+    revealChild: false,
     child: Box({
         vertical: true,
         className: 'spacing-v-5',
