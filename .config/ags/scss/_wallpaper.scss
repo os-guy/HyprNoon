@@ -1,47 +1,37 @@
+.wallselect-bg {
+    background-color: $layer0;
+    border-bottom: 0.5px solid $outliner;
+    padding: 1rem 0rem 1.2rem;
+    // margin-top:0.5rem;
+    border-radius: $rounding_medium $rounding_medium 0 0;
+}
 .wallpaper-list {
     .preview-box {
-        min-width: 150px;
-        min-height: 90px;
+        min-width: 164px;
+        min-height: 102.5px;
         background-size: cover;
         background-position: center;
-        border-radius: 8px;
+        border-radius: $rounding_small;
     }
 
     button {
-        padding: 4px;
-        margin: 4px;
-    }
-
-    .scroll-box {
-        min-height: 110px;
+        margin: 5px;
     }
 }
-.wallselect-container{
-    @include elevation2;
-    @include menu_decel;
+.wallselect-content {
+    background-color: $layer1;
+    padding: 0.5rem 0.5rem;
+    margin: 0 $elevation_margin + $elevation_margin;
+    border-radius:$rounding_medium;
 }
 .corner-wallselect{
     @include large-rounding;
     background-color: $background;
 }
-$rounding_modules: $rounding_large - $elevation_margin + 0.068rem;
-.wallselect-window {
-    border-radius: $rounding_modules $rounding_modules 0 0;
-    background-color: $background;
-    padding: 1.023rem;
-}
-
-
 .wallpaper-placeholder {
     padding: 2rem;
-
-    .txt-large {
-        font-size: 1.2em;
-    }
-
-    .txt-subtext {
-        opacity: 0.8;
-    }
+    @include titlefont;
+    color: $onSurfaceVariant;
 }
 
 .generate-thumbnails {

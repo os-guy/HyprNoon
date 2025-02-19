@@ -10,8 +10,9 @@ import { AnoonBar } from "./modes/anoon.js";
 import { WindowsTaskbar } from "./modes/windows.js";
 import { VerticalBar } from "./modes/vertical.js";
 import { VerticalBarPinned } from "./modes/verticalPinned.js";
-import { MacBar } from "./modes/macLike.js";
+import { IslandBar } from "./modes/macLike.js";
 import { NotchBar } from "./modes/notch.js";
+
 // Mode configuration:
 // [Component, ShowCorners, Description]
 const horizontalModes = new Map([
@@ -28,7 +29,7 @@ const horizontalModes = new Map([
   // Windows Taskbar mode without corners
   ["5", [WindowsTaskbar, false, "Windows Taskbar"]],
   // Mac-like mode without corners
-  ["6", [MacBar, false, "Mac"]],
+  ["6", [IslandBar, false, "Dynamic"]],
   // Notch mode without corners
   ["7", [NotchBar, false, "Notch"]],
 

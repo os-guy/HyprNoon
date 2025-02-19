@@ -13,13 +13,14 @@ import Cheatsheet from "./modules/cheatsheet/main.js";
 import DesktopBackground from "./modules/desktopbackground/main.js";
 import Dock from "./modules/dock/main.js";
 import Corner from "./modules/screencorners/main.js";
-import Indicator from "./modules/indicators/main.js";
+import { Indicators } from "./modules/indicators/main.js";
+import ColorScheme from "./modules/indicators/colorscheme.js";
 import Overview from "./modules/overview/main.js";
 import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
+import MusicControls from "./modules/indicators/musiccontrols.js";
 import { COMPILED_STYLE_DIR } from "./init.js";
-
 const range = (length, start = 1) =>
   Array.from({ length }, (_, i) => i + start);
 function forMonitors(widget) {
@@ -47,9 +48,11 @@ for (let i = 0; i < monitors; i++) {
 
 const Windows = () => [
   SideLeft(),
+  MusicControls(),
+  ColorScheme(),
   SideRight(),
   ...(userOptions.asyncGet().indicators.enabled !== false
-    ? [forMonitors(Indicator)]
+    ? [forMonitors(Indicators)]
     : []),
   ...(userOptions.asyncGet().session.enabled !== false
     ? [forMonitors(Session)]
@@ -78,6 +81,6 @@ const Windows = () => [
 
 App.config({
   css: `${COMPILED_STYLE_DIR}/style.css`,
-  stackTraceOnError: true,
+  stackTraceOnError: false,
   windows: Windows().flat(1),
 });

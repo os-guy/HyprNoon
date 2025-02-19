@@ -91,10 +91,13 @@ globalThis['closeEverything'] = () => {
         App.closeWindow(`cheatsheet${i}`);
         App.closeWindow(`session${i}`);
     }
-    Utils.exec(`pkill rofi`);
+    Utils.execAsync(`pkill rofi`);
     App.closeWindow('sideleft');
     App.closeWindow('sideright');
     App.closeWindow('overview');
+    App.closeWindow('musiccontrols');
+    App.closeWindow('ipod');
+    App.closeWindow('wallselect');
 };
 
 // Watch for monitor changes and update modes

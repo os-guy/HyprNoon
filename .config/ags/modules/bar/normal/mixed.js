@@ -8,7 +8,6 @@ import { AnimatedCircProg } from "../../.commonwidgets/cairo_circularprogress.js
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { showMusicControls } from '../../../variables.js';
 import scrolledmodule from '../../.commonwidgets/scrolledmodule.js';
-import NetworkSpeed from '../modules/networkspeed.js';
 const CUSTOM_MODULE_CONTENT_INTERVAL_FILE = `${GLib.get_user_cache_dir()}/ags/user/scripts/custom-module-interval.txt`;
 const CUSTOM_MODULE_CONTENT_SCRIPT = `${GLib.get_user_cache_dir()}/ags/user/scripts/custom-module-poll.sh`;
 const CUSTOM_MODULE_LEFTCLICK_SCRIPT = `${GLib.get_user_cache_dir()}/ags/user/scripts/custom-module-leftclick.sh`;
@@ -230,13 +229,12 @@ export default () => {
                 scrolledmodule({
                     children: [
                         Widget.Box({hexpand:true, hpack:'end',children:[SystemResourcesOrCustomModule(),]}),
-                        Widget.Box({hexpand:true,hpack:"end",children:[BarGroup({hpack:"center",hexpand:true,child:NetworkSpeed()})]}),
                     ]
                 })]:[]),
                 ...(userOptions.asyncGet().bar.elements.showMusic? [BarGroup({ 
                     child: EventBox({
                     child: BarGroup({ child: musicStuff }),
-                    onPrimaryClick: () => showMusicControls.setValue(!showMusicControls.value),
+                    onPrimaryClick: () => App.toggleWindow('musiccontrols'),
                     onSecondaryClick: () => execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print),
                     onMiddleClick: () => execAsync('playerctl play-pause').catch(print),
                     setup: (self) => self.on('button-press-event', (_, event) => {

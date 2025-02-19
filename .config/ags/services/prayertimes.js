@@ -67,6 +67,9 @@ class PrayerTimesService extends Service {
         // Calculate next prayer
         this.#calculateNextPrayer();
 
+        // Save to cache
+        this.#saveToCache(data);
+
         this.emit('updated');
     }
 
@@ -99,7 +102,7 @@ class PrayerTimesService extends Service {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const year = currentDate.getFullYear();
         const formattedDate = `${day}-${month}-${year}`;
-        const city = userOptions.asyncGet().muslimStuff.city || Mekka ;
+        const city = userOptions.asyncGet().muslimStuff.city || 'Mekka';
         execAsync([
             'curl',
             '-s',
@@ -110,10 +113,48 @@ class PrayerTimesService extends Service {
                 this.#updateTimes(data);
             } catch (error) {
                 console.error('Error parsing prayer times:', error);
+                this.#loadFromCache();
             }
         }).catch(error => {
             console.error('Error fetching prayer times:', error);
+            this.#loadFromCache();
         });
+    }
+
+    #getCacheFilePath() {
+        const cacheDir = GLib.get_user_cache_dir();
+        return `${cacheDir}/prayer_times_cache.json`;
+    }
+
+    #saveToCache(data) {
+        const cacheFilePath = this.#getCacheFilePath();
+        const file = Gio.File.new_for_path(cacheFilePath);
+        const outputStream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
+
+        const jsonData = JSON.stringify(data);
+        outputStream.write(jsonData, null);
+        outputStream.close(null);
+    }
+
+    #loadFromCache() {
+        const cacheFilePath = this.#getCacheFilePath();
+        const file = Gio.File.new_for_path(cacheFilePath);
+
+        if (!file.query_exists(null)) {
+            console.error('Cache file does not exist');
+            return;
+        }
+
+        const inputStream = file.read(null);
+        const data = inputStream.read_bytes(file.query_info('standard::size', Gio.FileQueryInfoFlags.NONE, null).get_size(), null).toString();
+        inputStream.close(null);
+
+        try {
+            const parsedData = JSON.parse(data);
+            this.#updateTimes(parsedData);
+        } catch (error) {
+            console.error('Error parsing cached prayer times:', error);
+        }
     }
 
     constructor() {

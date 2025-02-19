@@ -1,17 +1,17 @@
 const { GLib, Gtk, GdkPixbuf, Gdk } = imports.gi;
+import PopupWindow from '../.widgethacks/popupwindow.js';
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
 const { exec, execAsync } = Utils;
 const { Box, EventBox, Icon, Scrollable, Label, Button, Revealer } = Widget;
-
+import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 import { fileExists } from '../.miscutils/files.js';
 import { AnimatedCircProg } from "../.commonwidgets/cairo_circularprogress.js";
-import { showMusicControls } from '../../variables.js';
 import { darkMode, hasPlasmaIntegration } from '../.miscutils/system.js';
 import CavaService from '../../services/cava.js';
-
+import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
 const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`
 const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 const colorMode = Utils.exec(`bash -c "sed -n '1p' '${LIGHTDARK_FILE_LOCATION}'"`);
@@ -19,17 +19,17 @@ const lightDark = (colorMode == "light") ? '-l' : '';
 const COVER_COLORSCHEME_SUFFIX = '_colorscheme.css';
 var lastCoverPath = '';
 
-function isRealPlayer(player) {
-    return (
-        // Remove unnecessary native buses from browsers if there's plasma integration
-        !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.firefox')) &&
-        !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
-        // playerctld just copies other buses and we don't need duplicates
-        !player.busName.startsWith('org.mpris.MediaPlayer2.playerctld') &&
-        // Non-instance mpd bus
-        !(player.busName.endsWith('.mpd') && !player.busName.endsWith('MediaPlayer2.mpd'))
-    );
-}
+// function isRealPlayer(player) {
+//     return (
+//         // Remove unnecessary native buses from browsers if there's plasma integration
+//         !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.firefox')) &&
+//         !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
+//         // playerctld just copies other buses and we don't need duplicates
+//         !player.busName.startsWith('org.mpris.MediaPlayer2.playerctld') &&
+//         // Non-instance mpd bus
+//         !(player.busName.endsWith('.mpd') && !player.busName.endsWith('MediaPlayer2.mpd'))
+//     );
+// }
 
 export const getPlayer = (name = userOptions.asyncGet().music.preferredPlayer) =>
     Mpris.getPlayer(name) || Mpris.players[0] || null;
@@ -49,9 +49,10 @@ function detectMediaSource(link) {
     }
     let url = link.replace(/(^\w+:|^)\/\//, '');
     let domain = url.match(/(?:[a-z]+\.)?([a-z]+\.[a-z]+)/i)[1];
-    if (domain == 'ytimg.com') return '󰗃 Youtube';
-    if (domain == 'discordapp.net') return '󰙯 Discord';
-    if (domain == 'sndcdn.com') return '󰓀 SoundCloud';
+    if (domain == 'ytimg.com') return '󰗃   Youtube';
+    if (domain == 'discordapp.net') return '󰙯   Discord';
+    if (domain == 'scdn.co') return '   Spotify';
+    if (domain == 'sndcdn.com') return '󰓀   SoundCloud';
     return domain;
 }
 
@@ -186,7 +187,7 @@ const CoverArt = ({ player, ...rest }) => {
     const coverPath = player.coverPath;
     const stylePath = `${player.coverPath}${darkMode.value ? '' : '-l'}${COVER_COLORSCHEME_SUFFIX}`;
     if (player.coverPath == lastCoverPath) {
-        Utils.timeout(100, () => {
+        Utils.timeout(300, () => {
             self.attribute.showImage(self, coverPath);
             self.css = `background-image: url('${coverPath}');`;
         });
@@ -263,13 +264,14 @@ const TrackSource = ({ player, ...rest }) => Widget.Revealer({
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
     child: Widget.Box({
         ...rest,
-        className: 'osd-music-pill spacing-h-5',
+        // className: 'spacing-v-5 spacing-h-5',
         homogeneous: true,
         children: [
             Label({
-                hpack: 'fill',
-                justification: 'center',
-                className: 'icon-nerd',
+                hpack: 'start',
+                opacity: 0.6,
+                // justification: 'center',
+                className: 'txt-small onSurfaceVariant',
                 setup: (self) => self.hook(player, (self) => {
                     // Update the label with the detected media source (e.g., Youtube, Discord).
                     self.label = detectMediaSource(player.trackCoverUrl);
@@ -348,7 +350,6 @@ const PlayState = ({ player }) => {
         })
     });
 }
-
 const CavaVisualizer = () => {
     const bars = Array(30).fill(0).map(() => Widget.Box({
         className: 'cava-bar cava-bar-low',
@@ -410,28 +411,31 @@ const CavaVisualizer = () => {
         });
     };
 
-    const checkAndUpdateCava = () => {
-        const player = Mpris.getPlayer();
-        // Run the visualizer only when music controls are visible and playback is active.
-        const shouldRun = showMusicControls.value && player?.playBackStatus === 'Playing';
-
-        if (shouldRun) {
-            startCava();
-        } else {
-            stopCava();
-        }
-    };
-
     return Widget.Box({
         className: 'cava-visualizer',
         spacing: 4,
         children: bars,
         setup: (self) => {
             visualizer = self;
+            const musicControlsWindow = App.getWindow('musiccontrols');
 
-            self.hook(showMusicControls, checkAndUpdateCava);
+            const checkAndUpdateCava = () => {
+                const player = Mpris.getPlayer();
+                const shouldRun = musicControlsWindow.visible && 
+                                player?.playBackStatus === 'Playing';
+
+                if (shouldRun) {
+                    startCava();
+                } else {
+                    stopCava();
+                }
+            };
+
+            // Connect to window visibility changes
+            self.hook(musicControlsWindow, checkAndUpdateCava, 'notify::visible');
+            // Connect to player changes
             self.hook(Mpris, checkAndUpdateCava);
-
+            // Initial check
             Utils.timeout(1000, checkAndUpdateCava);
 
             self.connect('destroy', () => {
@@ -446,10 +450,9 @@ const CavaVisualizer = () => {
         },
     });
 };
-
 const MusicControlsWidget = (player) => Box({
     className: 'osd-music spacing-h-20 ',
-    // css: `min-height: 9.5rem;`,
+    css: `min-height: 9.5rem;`,
     vexpand:false,
     children: [
         Widget.Overlay({
@@ -457,7 +460,9 @@ const MusicControlsWidget = (player) => Box({
                 className: 'cava-container',
                 hexpand: true,
                 vexpand: true,
-                children: [CavaVisualizer()],
+                children: [
+                    userOptions.asyncGet().ipod.visualizer.enabled ? CavaVisualizer() : null
+                ],
             }),
             overlays: [
                 Box({
@@ -475,6 +480,7 @@ const MusicControlsWidget = (player) => Box({
                                     children: [
                                         TrackTitle({ player: player }),
                                         TrackArtists({ player: player }),
+                                        TrackSource({ player: player }),
                                     ]
                                 }),
                                 Box({ vexpand: true }),
@@ -489,32 +495,47 @@ const MusicControlsWidget = (player) => Box({
                                     }
                                 })
                             ]
-                        })
+                        }),
                     ],
                 }),
             ],
         })
     ]
 });
-
-// Main exported widget that controls overall visibility.
-export default () => Revealer({
-    transition: 'slide_down',
-    transitionDuration: userOptions.asyncGet().animations.durationLarge,
-    revealChild: false, // Initially hidden.
-    // The hook below controls the visibility of the entire music controls widget
-    // based on the showMusicControls flag.
-    setup: (self) => self.hook(showMusicControls, () => {
-        self.revealChild = showMusicControls.value;
-    }),
-    child: Box({
-        vexpand:true,
-        hexpand:true,
-        css:`min-height:10rem;min-width:50rem`,
-        children: Mpris.bind("players")
+const content = Widget.Box({
+    hexpand: false,
+    vexpand: false,
+    children:[
+        RoundedCorner('topright', {className: 'corner corner-music'}),
+        Box({
+            vexpand: false,
+            hexpand: false,
+            spacing: 25, // Added spacing property here
+            css: `min-height:10rem; min-width:70rem`,
+            children: Mpris.bind("players")
             .as(players =>
-                // Only valid players (as determined by isRealPlayer) get their own MusicControlsWidget.
-                players.map((player) => (isRealPlayer(player) ? MusicControlsWidget(player) : null))
+                players.map(player => MusicControlsWidget(player))
             )
-    }),
+        }),
+        RoundedCorner('topleft', {className: 'corner corner-music'}),
+    ]
+});
+export default () => PopupWindow({
+    keymode: 'on-demand',
+    anchor: ['top'],
+    exclusivity:"ignore",
+    layer: 'top',
+    name: 'musiccontrols',
+    child:Box({
+            children:[
+        Box({
+            vertical: true,
+            children:[
+                content,
+                clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'vertical' }),
+            ]
+        }),
+        // clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'horizontal' }), 
+    ]
+})
 });

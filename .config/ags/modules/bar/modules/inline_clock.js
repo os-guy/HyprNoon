@@ -25,12 +25,12 @@ const InLineClock = () =>
     },
     child: Widget.Box({
       vpack: "center",
-      className: "onSurfaceVariant txt-semibold techfont",
+      className: "onSurfaceVariant txt-bold techfont",
       tooltipText: date.bind(),
       children: [
         Widget.Label({
           css:`font-size:16.5px;`,
-          className: "onSurfaceVariant txt-semibold txt-monospace",
+          className: "onSurfaceVariant txt-bold txt-monospace",
           label: time.bind(),
         }),
       ],

@@ -6,6 +6,7 @@ import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 const { Box, Label, EventBox, Scrollable, Button } = Widget;
 import ColorPicker from "../bar/modules/color_picker.js";
+import { RoundedCorner } from './../.commonwidgets/cairo_roundedcorner.js';
 // Constants
 const CONFIG_DIR = GLib.get_home_dir() + '/.config/ags';
 const WALLPAPER_DIR = GLib.get_home_dir() + (userOptions.asyncGet().wallselect.wallpaperFolder || '/Pictures/wallpapers');
@@ -148,6 +149,7 @@ const createPlaceholder = () => Box({
 // Generate Thumbnails Button
 const GenerateButton = () => Widget.Button({
     className: 'button-accent generate-thumbnails',
+    css:`margin-right:1.2rem;`,
     child: Box({
         spacing:8,
         children: [
@@ -173,8 +175,7 @@ const toggleWindow = () => {
     win.visible = !win.visible;
 };
 const ColorPickerBox = () => Box({
-    vertical: true,
-    css:`padding:2px 12px;border-radius:25px`,
+    css:`padding:2px 12px;margin-left:1.2rem;border-radius:25px`,
     className: 'bar-group bar-group-standalone',
     child:ColorPicker()
 });
@@ -199,34 +200,50 @@ export default () => Widget.Window({
         overlays: [
             Box({
                 vertical: true,
-                className: "sidebar-right spacing-v-15",
                 vpack: userOptions.asyncGet().bar.position === "top" ? 'start' : 'end',
                 children: [
                     Box({
-                        className: "wallselect-header",
-                        children: [
-                            ColorPickerBox(),
-                            Box({ hexpand: true }),
-                            GenerateButton(),
-                        ],
-                    }),
-                    Box({
                         vertical: true,
-                        className: "sidebar-module",
-                        setup: (self) =>
-                            self.hook(
-                                App,
-                                async (_, name, visible) => {
-                                    if (name === "wallselect" && visible) {
-                                        const content = await createContent();
-                                        self.children = [content];
-                                    }
-                                },
-                                "window-toggled",
-                            ),
+                        className: "wallselect-bg spacing-v-15",
+                        children:[
+                            Box({
+                                className: "wallselect-header",
+                                children: [
+                                    ColorPickerBox(),
+                                    Box({ hexpand: true }),
+                                    GenerateButton(),
+                                ],
+                            }),
+                            Box({
+                                vertical: true,
+                                vpack:"center",
+                                className: "wallselect-content",
+                                setup: (self) =>
+                                    self.hook(
+                                        App,
+                                        async (_, name, visible) => {
+                                            if (name === "wallselect" && visible) {
+                                                const content = await createContent();
+                                                self.children = [content];
+                                            }
+                                        },
+                                        "window-toggled",
+                                    ),
+                                }),
+
+                        ]
                     }),
-                ],
-            }),
+                        Box({
+                            vpack: 'end',
+                            children:[
+                                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
+                                Box({hexpand:true}),
+                                RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
+        
+                            ]
+                        })
+                    ],
+                }),
         ],
     }),
 });

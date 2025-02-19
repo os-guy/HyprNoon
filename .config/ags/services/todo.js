@@ -12,7 +12,7 @@ class TodoService extends Service {
     }
 
     _todoPath = '';
-    _todoJson = [];
+    _todoList = [];
 
     refresh(value) {
         this.emit('updated', value);
@@ -23,61 +23,73 @@ class TodoService extends Service {
     }
 
     get todo_json() {
-        return this._todoJson;
+        return this._todoList;
+    }
+
+    _parseMarkdown(markdown) {
+        return markdown.split('\n')
+            .filter(line => line.startsWith('- [ ] ') || line.startsWith('- [x] '))
+            .map(line => {
+                const done = line.startsWith('- [x] ');
+                const content = line.slice(6).trim();
+                return { content, done };
+            });
     }
 
     _save() {
-        Utils.writeFile(JSON.stringify(this._todoJson), this._todoPath)
+        const markdown = this._todoList.map(todo => 
+            `- [${todo.done ? 'x' : ' '}] ${todo.content}`
+        ).join('\n');
+        Utils.writeFile(markdown, this._todoPath)
             .catch(print);
     }
 
     add(content) {
-        this._todoJson.push({ content, done: false });
+        this._todoList.push({ content, done: false });
         this._save();
         this.emit('updated');
     }
 
     check(index) {
-        this._todoJson[index].done = true;
+        this._todoList[index].done = true;
         this._save();
         this.emit('updated');
     }
 
     uncheck(index) {
-        this._todoJson[index].done = false;
+        this._todoList[index].done = false;
         this._save();
         this.emit('updated');
     }
 
     remove(index) {
-        this._todoJson.splice(index, 1);
-        Utils.writeFile(JSON.stringify(this._todoJson), this._todoPath)
-            .catch(print);
+        this._todoList.splice(index, 1);
+        this._save();
         this.emit('updated');
     }
 
     constructor() {
         super();
-        this._todoPath = `${GLib.get_user_state_dir()}/ags/user/todo.json`;
+        this._todoPath = userOptions.asyncGet().etc.todoPath || `${GLib.get_user_state_dir()}/ags/user/todo.md`;
         try {
             const fileContents = Utils.readFile(this._todoPath);
-            this._todoJson = JSON.parse(fileContents);
+            this._todoList = this._parseMarkdown(fileContents);
         }
         catch {
             Utils.exec(`bash -c 'mkdir -p ${GLib.get_user_cache_dir()}/ags/user'`);
             Utils.exec(`touch ${this._todoPath}`);
-            Utils.writeFile("[]", this._todoPath).then(() => {
-                this._todoJson = JSON.parse(Utils.readFile(this._todoPath))
+            Utils.writeFile("", this._todoPath).then(() => {
+                this._todoList = this._parseMarkdown(Utils.readFile(this._todoPath));
             }).catch(print);
         }
     }
 }
 
-// the singleton instance
+// The singleton instance
 const service = new TodoService();
 
-// make it global for easy use with cli
+// Make it global for easy use with cli
 globalThis.todo = service;
 
-// export to use in other modules
+// Export to use in other modules
 export default service;

@@ -21,15 +21,11 @@
     "enabled": true
   },
   "cheatshhet": {
-    "enabled": true,
-    "modules": {
-      "periodicTable": "true",
-      "cheats": "true"
-    },
-    "note": "todo Cheatsheet"
+    "enabled": true
   },
   "desktopBackground": {
     "enabled": true,
+    "resources": true,
     "visible": false
   },
   "ai": {
@@ -46,9 +42,9 @@
     ]
   },
   "animations": {
-    "choreographyDelay": 25,
-    "durationSmall": 110,
-    "durationLarge": 180
+    "choreographyDelay": 10,
+    "durationSmall": 80,
+    "durationLarge": 200
   },
   "appearance": {
     "avatar": "avatar.png",
@@ -65,16 +61,15 @@
     "keyboardUseFlag": false,
     "layerSmoke": false,
     "layerSmokeStrength": 0.2,
-    "barRoundCorners": 0,
-    "fakeScreenRounding": 1
+    "fakeScreenRounding": 2
   },
   "apps": {
     "bluetooth": "overskride",
-    "imageViewer": "loupe",
+    "imageViewer": "swappy",
     "network": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
     "settings": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
-    "taskManager": "foot -e btop",
-    "terminal": "foot"
+    "taskManager": "kitty btop",
+    "terminal": "kitty"
   },
   "battery": {
     "low": 20,
@@ -119,20 +114,20 @@
   },
   "overview": {
     "enabled": true,
+    "enableContent":true,
     "scale": 0.18,
     "numOfRows": 2,
-    "numOfCols": 5,
     "wsNumScale": 0.09,
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
-    "extraCss":"min-width:500px",
+    "extraCss":"min-width:450px",
     "ModuleCalendar" : {
         "enabled" : true,
-        "visible" : true
+        "visible" : false
      },
     "centerModules": {
-      "enabled": [
+        "enabled": [
         "vpnGate",
         "notifications",
         "audioControls",
@@ -166,7 +161,7 @@
         "enabled": true
       },
       "liveConfig": {
-        "enabled": false
+        "enabled": true
       },
       "prayerTimes": {
         "enabled": false
@@ -182,15 +177,6 @@
         "extraGptModels"
       ],
     "extraGptModels": {
-        "deepseek": {
-          "name": "deepseek API",
-          "logo_name": "deepseek-symbolic",
-          "description": "deepseek/deepseek-chat via OpenRouter",
-          "base_url": "https://openrouter.ai/api/v1/chat/completions",
-          "key_get_url": "https://openrouter.ai/keys",
-          "key_file": "openrouter_key.txt",
-          "model": "deepseek/deepseek-chat"
-        },
         "zuki": {
           "name": "ZoukiJourney API",
           "logo_name": "ai-zukijourney-symbolic",
@@ -226,15 +212,6 @@
           "key_get_url": "https://openrouter.ai/keys",
           "key_file": "openrouter_key.txt",
           "model": "microsoft/phi-4"
-        },
-        "deepseek-llama-70b": {
-          "name": "deepseek-r1-70b",
-          "logo_name": "openrouter-symbolic",
-          "description": "deepseek/deepseek-r1-distill-llama-70b:free via OpenRouter",
-          "base_url": "https://openrouter.ai/api/v1/chat/completions",
-          "key_get_url": "https://openrouter.ai/keys",
-          "key_file": "openrouter_key.txt",
-          "model": "deepseek/deepseek-r1-distill-llama-70b:free"
         },
         "mistral-free": {
           "name": "mistralai/mistral-7b-instruct:free",
@@ -336,8 +313,8 @@
     "style": "japanese"
   },
   "dock": {
-    "enabled": true,
-    "hiddenThickness": 5,
+    "enabled": false,
+    "hiddenThickness": 7,
     "pinnedApps": [
       "zen-browser",
       "spotube",
@@ -463,6 +440,9 @@
     }
   },
   "etc":{
+    "showPassword": true,
+    "todoPath": "${GLib.get_user_state_dir()}/ags/user/todo.md",
+    "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
     "weather":{
       "cycle": false,
       "cycleTimeout":"5000"
@@ -485,13 +465,14 @@
           "imageQuality": 80,
           "imageResize": 60,
           "transitionMs": 400,
-          "enableBlur": true
+          "enableBlur": false
       },
       "coverArt": {
           "size": 230,
           "borderRadius": 12
       },
       "visualizer": {
+          "enabled":false,
           "margin": "0",
           "mode": "center",
           "padding": "0",
