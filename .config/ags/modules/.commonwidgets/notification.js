@@ -188,7 +188,7 @@ export default ({
                     justify: Gtk.Justification.LEFT,
                     maxWidthChars: 1,
                     wrap: true,
-                    label: notifObject.body,
+                    label: notifObject.body || '',
                     wrapMode: Pango.WrapMode.WORD_CHAR,
                 }),
                 Box({

@@ -14,7 +14,6 @@ import { IslandBar } from "./modes/macLike.js";
 import { NotchBar } from "./modes/notch.js";
 
 // Mode configuration:
-// [Component, ShowCorners, Description]
 const horizontalModes = new Map([
   // Normal bar with corners
   ["0", [NormalBar, true, "Normal"]],
@@ -145,7 +144,6 @@ export const Bar = async (monitor = 0) => {
     try {
       children[key] = component;
     } catch (error) {
-      // Log removed
     }
   }
 
