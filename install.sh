@@ -31,9 +31,6 @@ case $SKIP_SYSUPDATE in
 	*) v sudo pacman -Syu;;
 esac
 
-remove_bashcomments_emptylines ${DEPLISTFILE} ./cache/dependencies_stripped.conf
-readarray -t pkglist < ./cache/dependencies_stripped.conf
-
 # Use yay. Because paru do not support cleanbuild.
 # Also see https://wiki.hyprland.org/FAQ/#how-do-i-update
 if ! command -v yay >/dev/null 2>&1;then
