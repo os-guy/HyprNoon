@@ -48,7 +48,7 @@ git remote get-url origin|grep -q "$remote_repo" || { echo "Dir \"$path\" is not
 x git pull origin main && git submodule update --init --recursive
 echo "$me: Downloaded."
 echo "$me: Running \"install.sh\"."
-x ./install/install.sh || { echo "$me: Error occured when running \"install.sh\"."; exit 1 ; }
+x ./install.sh || { echo "$me: Error occured when running \"install.sh\"."; exit 1 ; }
 
 # Check the exit status of install.sh and delete the cache directory and THIS SCRIPT
 if [ $? -eq 0 ]; then
