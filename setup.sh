@@ -2,7 +2,7 @@
 # Online script for install HyprNoon.
 
 me="-->online-setup<--"
-remote_repo=os-guy/HyprNoon
+remote_repo=Pharmaracist/HyprNoon
 set -e
 
 function try { "$@" || sleep 0; }
@@ -55,10 +55,6 @@ if [ $? -eq 0 ]; then
   # If install.sh was successful (exit code 0), delete the HyprNoon cache directory
   rm -rf "$path"
   echo "Installation completed successfully and HyprNoon cache directory deleted."
-
-  # Self-delete the script itself
-  rm -f "$script_path"
-  echo "This installation script has now deleted itself."
 
 else
   # If install.sh failed (non-zero exit code), indicate failure
