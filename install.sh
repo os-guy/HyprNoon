@@ -312,14 +312,6 @@ case $SKIP_HYPRLAND in
 			v cp -f "$base/.config/hypr/hyprland.conf" "$t"
 			existed_hypr_conf=n
 		fi
-		t="$XDG_CONFIG_HOME/hypr/custom"
-		if [ -d $t ]; then
-			echo -e "\e[34m[$0]: \"$t\" already exists, will not do anything.\e[0m"
-		else
-			echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-			# Source is now back to .config/hypr, rsync source path corrected:
-			v rsync -av --delete "$base/.config/hypr/custom/" "$t/"
-		fi
 		;;
 esac
 
