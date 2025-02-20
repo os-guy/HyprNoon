@@ -10,7 +10,6 @@ SCHEME="scheme-tonal-spot"
 CONTRAST="0"
 
 # Rofi theme
-ROFI_THEME="$HOME/.local/share/rofi/themes/style-4.rasi"
 
 # Material Symbols Codes
 ICON_WALLPAPER=$'\ue0d6 '
@@ -64,10 +63,10 @@ reapply_current_wallpaper() {
 select_mode() {
     local mode_menu="$ICON_MODE_DARK  dark\n$ICON_MODE_LIGHT  light"
     debug "Mode menu options: $mode_menu"
-    local cmd="echo -e \"$mode_menu\" | rofi -dmenu -i -p 'Select Mode' -theme '$ROFI_THEME'"
+    local cmd="echo -e \"$mode_menu\" | rofi -dmenu -i -p 'Select Mode'"
     local selection
     selection=$(~/.config/hypr/scripts/rofi_toggle.sh "$cmd")
-    
+
     debug "Selected mode: $selection"
     if [ -n "$selection" ]; then
         MODE=$(echo "$selection" | sed 's/^.*  //')
@@ -89,11 +88,11 @@ select_scheme() {
         "$ICON_SCHEME  scheme-content       Content Based"
         "$ICON_SCHEME  scheme-fruit-salad   Colorful Mix"
     )
-    
-    local cmd="printf '%s\n' '${schemes[*]}' | rofi -dmenu -i -p 'Select Scheme' -theme '$ROFI_THEME'"
+
+    local cmd="printf '%s\n' '${schemes[*]}' | rofi -dmenu -i -p 'Select Scheme' "
     local selection
     selection=$(~/.config/hypr/scripts/rofi_toggle.sh "$cmd")
-    
+
     debug "Selected scheme: $selection"
     if [ -n "$selection" ]; then
         SCHEME=$(echo "$selection" | awk '{print $2}')
@@ -112,11 +111,11 @@ select_contrast() {
         "$ICON_CONTRAST  -0.5 Lower"
         "$ICON_CONTRAST  -1.0 Minimum"
     )
-    
-    local cmd="printf '%s\n' '${contrast_options[*]}' | rofi -dmenu -i -p 'Select Contrast' -theme '$ROFI_THEME'"
+
+    local cmd="printf '%s\n' '${contrast_options[*]}' | rofi -dmenu -i -p 'Select Contrast'"
     local selection
     selection=$(~/.config/hypr/scripts/rofi_toggle.sh "$cmd")
-    
+
     debug "Selected contrast: $selection"
     if [ -n "$selection" ]; then
         CONTRAST=$(echo "$selection" | awk '{print $2}')
@@ -137,7 +136,7 @@ pick_color() {
             --mode "$MODE" \
             --type "$SCHEME" \
             --contrast "$CONTRAST"
-        
+
         # Copy color to clipboard and notify
         echo "#$color" | wl-copy
         notify-send "Color Picked" "Color #$color has been copied to clipboard" -i color-select
@@ -148,7 +147,7 @@ pick_color() {
 show_menu() {
     local current_mode_icon="$ICON_MODE_DARK"
     [ "$MODE" = "light" ] && current_mode_icon="$ICON_MODE_LIGHT"
-    
+
     local options=(
         "$ICON_WALLPAPER Select Wallpaper"
         "$ICON_RANDOM Random Wallpaper"
@@ -159,7 +158,7 @@ show_menu() {
     )
 
     local choice
-    choice=$(printf '%s\n' "${options[@]}" | rofi -dmenu -theme "$ROFI_THEME" -p "Wallpaper Menu")
+    choice=$(printf '%s\n' "${options[@]}" | rofi -dmenu -p "Wallpaper Menu")
 
     case "$choice" in
         "$ICON_WALLPAPER Select Wallpaper")
@@ -205,8 +204,7 @@ show_wallpaper_selector() {
         -dmenu \
         -i \
         -p 'Select Wallpaper' \
-        -show-icons \
-        -theme '$HOME/.local/share/rofi/themes/wallpaper-selector.rasi' | awk -F'\0' '{print \$1}'")
+        -show-icons | awk -F'\0' '{print \$1}'")
 
     # Clean up
     rm -rf "$TEMP_DIR"
