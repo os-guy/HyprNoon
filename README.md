@@ -52,7 +52,7 @@ cd dots-hyprland
 
 ### 💻 Using Our Install Script:
 ```bash
-bash <(curl -s "https://raw.githubusercontent.com/os-guy/HyprNoon/refs/heads/main/install/install.sh")
+bash <(curl -s "https://raw.githubusercontent.com/os-guy/HyprNoon/refs/heads/main/setup.sh")
 ```
 
 ## 🖼️ Showcase
