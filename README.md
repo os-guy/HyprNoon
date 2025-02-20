@@ -55,6 +55,8 @@ cd dots-hyprland
 bash <(curl -s "https://raw.githubusercontent.com/os-guy/HyprNoon/refs/heads/main/setup.sh")
 ```
 
+**AFTER THE INSTALLATION, PLEASE TRY TO CHANGE YOUR WALLPAPER 2-3 TIMES BY HITTING `CTRL+SUPER+T`**
+
 ## 🖼️ Showcase
 <div align="center">
 
