@@ -335,23 +335,6 @@ case $SKIP_ROFI in # Assuming you have a SKIP_ROFI variable
 		;;
 esac
 
-
-# .local/bin - Package: local-bin
-printf "\e[34m[$0]: Synchronizing .local/bin files...\e[0m\n"
-v rsync -av --delete "$base/.local/bin/" "$XDG_BIN_HOME"
-
-
-# For Wallpapers (Keep rsync as it's not typical dotfile management)
-case $SKIP_WALLPAPERS in
-	true) sleep 0 ;;
-	*)
-		echo -e "\e[34m[$0]: Setting up wallpapers...\e[0m"
-		v mkdir -p "$HOME/Pictures/Wallpapers"
-		v rsync -av "Wallpapers/Lock.jpg" "$HOME/Pictures/Wallpapers/"
-		;;
-esac
-
-
 # Dark mode by default (keep as is)
 v gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
